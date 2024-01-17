@@ -51,38 +51,35 @@ public class Board {
         public String getCategory() {
             return category;
         }
+    }
 
-        private int bookmark_cnt;
+    private int bookmark_cnt;
 
-        @Enumerated(value = EnumType.STRING)
-        private tag tag;
+    @Enumerated(value = EnumType.STRING)
+    private tag tag;
+    public enum tag {
+        DP("다이나믹 프로그래밍"),
+        DATASTRUCTURE("자료구조"),
+        GRAPH("그래프 이론"),
+        MATH("수학"),
+        IMPLEMENTATION("구현"),
+        STRING("문자열"),
+        GREEDY("그리디"),
+        TREE("트리"),
+        HASH("해시"),
+        SORT("정렬");
 
-        public enum tag {
-            DP("다이나믹 프로그래밍"),
-            DATASTRUCTURE("자료구조"),
-            GRAPH("그래프 이론"),
-            MATH("수학"),
-            IMPLEMENTATION("구현"),
-            STRING("문자열"),
-            GREEDY("그리디"),
-            TREE("트리"),
-            HASH("해시"),
-            SORT("정렬");
+        private String tag;
 
-            private String tag;
-
-            tag(String tag) {
+        tag(String tag) {
                 this.tag = tag;
             }
-
-            public String getTag() {
-                return tag;
-            }
-        }
-
-        private LocalDateTime write_date;
-
-        private LocalDateTime modified_date;
-
+        public String getTag() { return tag; }
     }
+
+    private LocalDateTime write_date;
+
+    private LocalDateTime modified_date;
+
+
 }
