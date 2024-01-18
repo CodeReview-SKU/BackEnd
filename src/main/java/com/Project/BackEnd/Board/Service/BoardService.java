@@ -2,6 +2,7 @@ package com.Project.BackEnd.Board.Service;
 
 import com.Project.BackEnd.Board.Entity.Board;
 import com.Project.BackEnd.Board.Repository.BoardRepository;
+import com.Project.BackEnd.DataNotFoundException;
 import com.Project.BackEnd.Member.Entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import com.Project.BackEnd.Board.Entity.Board.category;
 import com.Project.BackEnd.Board.Entity.Board.tag;
+
 @RequiredArgsConstructor
 @Service
 public class BoardService {
@@ -28,47 +30,43 @@ public class BoardService {
             return board.get();
         }
         else {
-            throw new RuntimeException("Data Not Found");
+            throw new DataNotFoundException("Data Not Found");
         }
 
     }
 
-    public void create(Member member, String title, String content, //수정 할 필요 있음
-                       category category, int bookmark_cnt, tag tag,
-                       LocalDateTime write_date) {
+    // 멤버, 제목, 내용, 카테고리, 북마크(0), 태그
+    public void create(Member member, String title, String content,
+                       category category, tag tag) {
         Board board = new Board();
         board.setMember(member);
         board.setTitle(title);
         board.setContent(content);
-        //board.setSource_code(source_code);
-        //board.setImage(image);
+        //board.setSource_code(source_code); //필수 내용이 아님
+        //board.setImage(image); // 필수 내용이 아님
         board.setCategory(category);
-        board.setBookmark_cnt(bookmark_cnt);
+        board.setBookmark_cnt(0); // 생성 당시의 북마크된 개수는 무조건 0.
         board.setTag(tag);
-        board.setWrite_date(write_date);
-        //board.setModified_date(modified_date);
+        board.setWrite_date(LocalDateTime.now());
+        //board.setModified_date(modified_date); // 필수 내용이 아님
 
         this.boardRepository.save(board);
     }
 
-    public void AddImage(Board board, String image) {
+    public void addImage(Board board, String image) { // 이미지 추가 메소드
         board.setImage(image);
         this.boardRepository.save(board);
     }
 
-    public void AddSourceCode(Board board, String source_code) {
+    public void addSourceCode(Board board, String source_code) { // 소스코드 삽입 메소드
         board.setSource_code(source_code);
         this.boardRepository.save(board);
     }
 
-    public void AddModifiedDate(Board board, LocalDateTime modified_date) {
-        board.setModified_date(modified_date);
-        this.boardRepository.save(board);
-    }
 
     public Page<Board> getList(int page) {  // 페이지 20개의 게시물 리스트로 보여주는 부분
         List<Sort.Order> list = new ArrayList<>();
-        list.add(Sort.Order.desc("write_date"));
+        list.add(Sort.Order.desc("write_date")); // 작성 일시를 기준으로 내림차순
         Pageable pageable = PageRequest.of(page, 20, Sort.by(list));
         return this.boardRepository.findAll(pageable);
     }

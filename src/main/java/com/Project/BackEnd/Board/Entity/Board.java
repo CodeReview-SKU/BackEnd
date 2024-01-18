@@ -81,5 +81,9 @@ public class Board {
 
     private LocalDateTime modified_date;
 
+    @PreUpdate //수정 시 일어나는 메소드 정의
+    public void preUpdate(){
+        this.modified_date = LocalDateTime.now();
+    }
 
 }
