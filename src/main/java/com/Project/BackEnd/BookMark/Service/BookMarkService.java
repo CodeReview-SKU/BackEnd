@@ -2,8 +2,7 @@ package com.Project.BackEnd.BookMark.Service;
 
 import com.Project.BackEnd.Board.Entity.Board;
 import com.Project.BackEnd.BookMark.Entity.BookMark;
-import com.Project.BackEnd.BookMark.Repository.BookMarkRepositoryByBoard;
-import com.Project.BackEnd.BookMark.Repository.BookMarkRepositoryByMember;
+import com.Project.BackEnd.BookMark.Repository.BookMarkRepository;
 import com.Project.BackEnd.DataNotFoundException;
 import com.Project.BackEnd.Member.Entity.Member;
 import lombok.RequiredArgsConstructor;
@@ -14,11 +13,20 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class BookMarkService {
-    private final BookMarkRepositoryByMember bookMarkRepositoryByMember;
-    private final BookMarkRepositoryByBoard bookMarkRepositoryByBoard;
+    private final BookMarkRepository bookMarkRepository;
 
-    public Board getBookMarkRepositoryByBoard(String title) {
-        Optional<Board> board = this.bookMarkRepositoryByBoard.findByTitle(title);
+    public BookMark getBookMarkRepositoryByBoard(String title) {
+        Optional<BookMark> bookMark = this.bookMarkRepository.findByTitle(title);
+        if (bookMark.isPresent()) {
+            return bookMark.get();
+        }
+        else {
+            throw new DataNotFoundException("Data not Found");
+        }
+    }
+
+    public BookMark getBookMarkRepositoryByMember(String name) {
+        Optional<BookMark> board = this.bookMarkRepository.findByName(name);
         if (board.isPresent()) {
             return board.get();
         }
@@ -27,21 +35,10 @@ public class BookMarkService {
         }
     }
 
-    public Board getBookMarkRepositoryByMember(String name) {
-        Optional<Board> board = this.bookMarkRepositoryByMember.findByName(name);
-        if (board.isPresent()) {
-            return board.get();
-        }
-        else {
-            throw new DataNotFoundException("Data not Found");
-        }
-    }
-
-    public BookMark create(Member member, Board board) {
+    public void create(Member member, Board board) {
         BookMark bookMark = new BookMark();
         bookMark.setMember(member);
         bookMark.setBoard(board);
-
-        return bookMark;
+        this.bookMarkRepository.save(bookMark);
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/board")
 @RequiredArgsConstructor
 @Controller
+//@RestController 리액트와 api 통신 시 교체.
 public class BoardController {
     private final BoardService boardService;
 

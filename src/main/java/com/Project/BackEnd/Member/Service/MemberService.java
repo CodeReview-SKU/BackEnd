@@ -16,13 +16,13 @@ import java.util.Optional;
 public class MemberService {
     private final MemberRepository memberRepository;
 
-    public Member create(String name, accountProvider accountProvider, role role) {
+    public void create(String name, accountProvider accountProvider, role role) {
         Member member = new Member();
         member.setName(name);
         member.setAccountProvider(accountProvider);
         member.setRole(role);
 
-        return member;
+        this.memberRepository.save(member);
     }
 
     public Member getMember(String name) {
