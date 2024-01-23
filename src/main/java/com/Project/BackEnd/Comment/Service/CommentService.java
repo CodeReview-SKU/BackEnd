@@ -4,6 +4,7 @@ package com.Project.BackEnd.Comment.Service;
 import com.Project.BackEnd.Board.Entity.Board;
 import com.Project.BackEnd.Comment.Entity.Comment;
 import com.Project.BackEnd.Comment.Repository.CommentRepository;
+import com.Project.BackEnd.DataNotFoundException;
 import com.Project.BackEnd.Member.Entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -24,7 +26,7 @@ public class CommentService {
 
         comment.setBoard(board);
         comment.setMember(member);
-        comment.setDate(LocalDateTime.now());
+        comment.setCreateDate(LocalDateTime.now());
         comment.setContent(content);
         this.commentRepository.save(comment);
     }
@@ -38,11 +40,21 @@ public class CommentService {
     public List<Comment> findByMemberId(Long memberId){
         return commentRepository.findByMemberId(memberId);
     }
+    // id 기준 조회
+    public Comment findById(Long id){
+        Optional<Comment> review = this.commentRepository.findById(id);
+        if(review.isPresent()){
+            return review.get();
+        }
+        else {
+            throw new DataNotFoundException("Comment not found");
+        }
+    }
 
     // Update 댓글 수정
     public void modifyComment(String content, Comment comment){
         comment.setContent(content);
-        comment.setDate(LocalDateTime.now());
+        comment.setModifyDate(LocalDateTime.now());
         this.commentRepository.save(comment);
     }
 

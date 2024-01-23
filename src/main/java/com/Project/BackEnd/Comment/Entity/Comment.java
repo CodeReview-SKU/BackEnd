@@ -28,5 +28,6 @@ public class Comment {
     @Column(length = 1000)
     private String content;
 
-    private LocalDateTime date;
+    private LocalDateTime createDate;
+    private LocalDateTime modifyDate;
 }
