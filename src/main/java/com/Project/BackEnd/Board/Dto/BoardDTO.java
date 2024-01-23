@@ -4,12 +4,15 @@ package com.Project.BackEnd.Board.Dto;
 import com.Project.BackEnd.Board.Entity.Board;
 import com.Project.BackEnd.Member.Entity.Member;
 import com.Project.BackEnd.Board.Entity.Board.*;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
-
+@Getter
+@Setter
 public class BoardDTO {
-    @Getter
+
     private long id;
     private Member member;
     private String title;
@@ -23,6 +26,7 @@ public class BoardDTO {
     private LocalDateTime modified_date;
 
 
+    @JsonCreator
     public BoardDTO(Board board) {
         this.id = board.getId();
         this.member = board.getMember();
@@ -37,6 +41,5 @@ public class BoardDTO {
         this.modified_date = board.getModified_date();
     }
 
-    // 아직 미완. **
 
 }

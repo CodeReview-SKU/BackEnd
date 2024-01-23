@@ -1,7 +1,7 @@
 package com.Project.BackEnd.Board.Entity;
 
-
 import com.Project.BackEnd.Member.Entity.Member;
+import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -48,6 +48,7 @@ public class Board {
             this.category = category;
         }
 
+        @JsonValue
         public String getCategory() {
             return category;
         }
@@ -74,6 +75,8 @@ public class Board {
         tag(String tag) {
                 this.tag = tag;
             }
+
+        @JsonValue
         public String getTag() { return tag; }
     }
 
