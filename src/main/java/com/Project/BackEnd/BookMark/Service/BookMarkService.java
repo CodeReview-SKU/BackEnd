@@ -14,9 +14,9 @@ import java.util.Optional;
 @Service
 public class BookMarkService {
     private final BookMarkRepository bookMarkRepository;
-
+/*
     public BookMark getBookMarkRepositoryByBoard(String title) {
-        Optional<BookMark> bookMark = this.bookMarkRepository.findByTitle(title);
+        Optional<BookMark> bookMark = this.bookMarkRepository.findByMember();
         if (bookMark.isPresent()) {
             return bookMark.get();
         }
@@ -41,4 +41,6 @@ public class BookMarkService {
         bookMark.setBoard(board);
         this.bookMarkRepository.save(bookMark);
     }
+    */
+
 }
