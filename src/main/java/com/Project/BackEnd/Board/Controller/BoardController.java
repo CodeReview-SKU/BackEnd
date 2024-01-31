@@ -2,6 +2,8 @@ package com.Project.BackEnd.Board.Controller;
 
 import com.Project.BackEnd.Board.Dto.BoardDTO;
 import com.Project.BackEnd.Board.Entity.Board;
+import com.Project.BackEnd.Board.Entity.Board.*;
+import com.Project.BackEnd.Board.Form.BoardForm;
 import com.Project.BackEnd.Board.Service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -51,7 +53,7 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoardList());
     }
 
-    @PutMapping(value = "/detail/{id}/addcode")
+    @PutMapping(value = "/detail/{id}/code")
     public ResponseEntity<Board> addSourceCode(@PathVariable long id, @RequestBody BoardDTO boardDTO) {
         Board board = boardService.getBoard(id);
         boardService.addSourceCode(board, boardDTO.getSource_code());
@@ -59,5 +61,18 @@ public class BoardController {
         return new ResponseEntity<>(board, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/list/tag/{tag}")
+    public ResponseEntity<List<Board>> listTag(@PathVariable tag tag) {
+        List<Board> list = boardService.getBoardListByTag(tag);
+
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping(value = "/list/category/{category}")
+    public ResponseEntity<List<Board>> listCategory(@PathVariable category category) {
+        List<Board> list = boardService.getBoardListByCategory(category);
+
+        return ResponseEntity.ok(list);
+    }
     // **** 이미지 추가 컨트롤러 추가 해야함. ****
 }

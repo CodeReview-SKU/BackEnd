@@ -2,12 +2,12 @@ package com.Project.BackEnd.Member.Entity;
 
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +20,7 @@ public class Member {
 
     public enum accountProvider{
         GOOGLE("구글"),
+        NAVER("네이버"),
         KAKAO("카카오");
 
         private String accountProvider;
@@ -50,4 +51,15 @@ public class Member {
             return role;
         }
     }
+
+    private String refreshToken;
+
+    @Builder
+    public Member(String name, accountProvider accountProvider, role role) {
+        this.name = name;
+        this.accountProvider = accountProvider;
+        this.role = role;
+    }
+
+
 }
