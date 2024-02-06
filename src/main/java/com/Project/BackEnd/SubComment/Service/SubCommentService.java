@@ -44,6 +44,7 @@ public class SubCommentService {
             throw new DataNotFoundException("SubComment not found");
         }
     }
+
     // Update 대댓글 수정
     public void modifySubComment(String content, SubComment subComment){
         subComment.setModifyDate(LocalDateTime.now());

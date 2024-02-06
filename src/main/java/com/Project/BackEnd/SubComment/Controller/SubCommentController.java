@@ -51,6 +51,7 @@ public class SubCommentController {
             return ResponseEntity.status(500).body("Error modifying subComment: " + e.getMessage());
         }
     }
+
     // 대댓글 삭제
     @DeleteMapping("/subcomments/comment/{id}")
     public ResponseEntity<String> deleteSubComment(@PathVariable("id") Long id, Principal principal) {
