@@ -46,6 +46,12 @@ public class BookMarkController {
         return ResponseEntity.ok(this.bookMarkService.getBookMarkList());
     }
 
+    @GetMapping("/count/{id}")
+    public ResponseEntity<Integer> count(@PathVariable long id) {
+        return ResponseEntity
+                .ok(this.bookMarkService
+                        .getBookMarkCount(this.boardService.getBoard(id)));
+    }
 
 
 }
