@@ -3,7 +3,6 @@ package com.Project.BackEnd.BookMark.Repository;
 import com.Project.BackEnd.Board.Entity.Board;
 import com.Project.BackEnd.BookMark.Entity.BookMark;
 import com.Project.BackEnd.Member.Entity.Member;
-import com.Project.BackEnd.Member.Repository.MemberRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

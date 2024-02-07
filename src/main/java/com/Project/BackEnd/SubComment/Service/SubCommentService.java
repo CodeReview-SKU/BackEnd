@@ -2,6 +2,7 @@ package com.Project.BackEnd.SubComment.Service;
 
 
 import com.Project.BackEnd.Comment.Entity.Comment;
+import com.Project.BackEnd.DataNotFoundException;
 import com.Project.BackEnd.Member.Entity.Member;
 import com.Project.BackEnd.SubComment.Entity.SubComment;
 import com.Project.BackEnd.SubComment.Repository.SubCommentRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -32,6 +34,15 @@ public class SubCommentService {
     // comment id 기준 대댓글 조회
     public List<SubComment> findByCommentId(Long commentId){
         return subCommentRepository.findByCommentId(commentId);
+    }
+
+    public SubComment findById(Long id){
+        Optional<SubComment> subComment = this.subCommentRepository.findById(id);
+        if (subComment.isPresent()){
+            return subComment.get();
+        }else {
+            throw new DataNotFoundException("SubComment not found");
+        }
     }
 
     // Update 대댓글 수정

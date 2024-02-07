@@ -19,13 +19,12 @@ import java.util.Optional;
 @Service
 public class BookMarkService {
     private final BookMarkRepository bookMarkRepository;
-    private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
+
 
     public List<BookMark> getBookMarkByMember(String name) {
         Optional<Member> member = this.memberRepository.findByName(name);
         List<BookMark> bookMark = this.bookMarkRepository.findByMember(member);
-
         if (! bookMark.isEmpty()) {
             return bookMark;
         }
@@ -33,6 +32,7 @@ public class BookMarkService {
             throw new DataNotFoundException("Data not Found");
         }
     }
+
     public List<BookMark> getBookMarkList() {
         List<BookMark> list = this.bookMarkRepository.findAll();
         if (!list.isEmpty()){
@@ -55,6 +55,8 @@ public class BookMarkService {
         this.bookMarkRepository.save(bookMark);
     }
 
+
+
     public BookMark getBookMark(long id) {
         Optional<BookMark> bookMark = this.bookMarkRepository.findById(id);
         if (bookMark.isPresent()) {
@@ -73,5 +75,6 @@ public class BookMarkService {
     public void delete(BookMark bookMark) {
         this.bookMarkRepository.delete(bookMark);
     }
+
 
 }

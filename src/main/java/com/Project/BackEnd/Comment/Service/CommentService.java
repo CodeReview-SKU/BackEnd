@@ -40,11 +40,12 @@ public class CommentService {
     public List<Comment> findByMemberId(Long memberId){
         return commentRepository.findByMemberId(memberId);
     }
+
     // id 기준 조회
     public Comment findById(Long id){
-        Optional<Comment> review = this.commentRepository.findById(id);
-        if(review.isPresent()){
-            return review.get();
+        Optional<Comment> comment = this.commentRepository.findById(id);
+        if(comment.isPresent()){
+            return comment.get();
         }
         else {
             throw new DataNotFoundException("Comment not found");
