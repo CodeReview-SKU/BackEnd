@@ -1,7 +1,7 @@
 # CodeReview
 
 ## 1. 프로젝트 소개
-### Code-Review (2024.01.12 ~ 2024.03.~~)
+### Code-Review (2024.01.12 ~ )
   <p text-align='center'> 알고리즘 코드를 리뷰하는 커뮤니티입니다. <br/>
   </p>
 
