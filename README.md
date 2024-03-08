@@ -6,13 +6,12 @@
   </p>
 
 ## 2. Team member
-### 
 
   | 윤다정<br>(FE) | 문환희<br>(BE) | 최동석<br>(BE) |
   |:--------:| :--------: | :--------: |
-  | <img src="https://avatars.githubusercontent.com/u/129060059?v=4" alt="김태현" width="200" height="200">| <img src="https://github.com/tjtmddk720/Gennet/assets/83910139/900644a6-6463-4157-ac2b-081f40037e4e" alt="서승아" width="200" height="200"> |  <img src="https://avatars.githubusercontent.com/u/96916609?v=4" alt="최동석" width="200" height="200"> | | 
+  | <img src="https://avatars.githubusercontent.com/u/129060059?v=4" alt="윤다정" width="200" height="200">| <img src="https://github.com/tjtmddk720/Gennet/assets/83910139/900644a6-6463-4157-ac2b-081f40037e4e" alt="문환희" width="200" height="200"> |  <img src="https://avatars.githubusercontent.com/u/96916609?v=4" alt="최동석" width="200" height="200"> | | 
   |[@dajung-y](https://github.com/dajung-y) | [@HwanheeMoon](https://github.com/HwanheeMoon) |[@eastwest9](https://github.com/eastwest9) |
-  | <p align="left">- Front End <br/>| <p align="left">- MEMBER <br/>- Board <br/>- Bookmark <br/></p> | <p align="left">- Comment <br/>- SubComment <br/></p> |
+  | <p align="left">- Front End <br/>| <p align="left">- Member <br/>- Board <br/>- Bookmark <br/></p> | <p align="left">- Comment <br/>- SubComment <br/></p> |
 
 ## 3. 사용기술스택
 ### Back-end
