@@ -82,13 +82,13 @@ public class JwtService {
     public Optional<String> extractRefreshToken(HttpServletRequest httpServletRequest) {
         return Optional.ofNullable(httpServletRequest.getHeader(refreshHeader))
                 .filter(refreshToken -> refreshToken.startsWith(BEARER))
-                .map(refreshToken -> refreshToken.replace("BEARER", ""));
+                .map(refreshToken -> refreshToken.replace(BEARER, ""));
     }
 
     public Optional<String> extractAccessToken(HttpServletRequest httpServletRequest) {
         return Optional.ofNullable(httpServletRequest.getHeader(accessHeader))
                 .filter(accessToken -> accessToken.startsWith(BEARER))
-                .map(accessToken -> accessToken.replace("BEARER", ""));
+                .map(accessToken -> accessToken.replace(BEARER, ""));
     }
 
     public Optional<String> extractName(String accessToken) {
@@ -99,7 +99,8 @@ public class JwtService {
                     .getClaim("name")
                     .asString());
         } catch (Exception e) {
-            log.error("유효하지 않은 토큰");
+            log.info(accessToken);
+            log.error("유효하지 않은 토큰2");
             return Optional.empty();
         }
 
@@ -120,6 +121,7 @@ public class JwtService {
             JWT.require(Algorithm.HMAC512(secretKey)).build().verify(token);
             return true;
         } catch (Exception e) {
+            log.info(token);
             log.error("유효하지 않은 토큰");
             return false;
         }

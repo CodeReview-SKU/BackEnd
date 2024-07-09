@@ -16,6 +16,7 @@ import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMap
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.io.IOException;
 
@@ -30,26 +31,26 @@ public class JwtFilter extends OncePerRequestFilter {
     private GrantedAuthoritiesMapper grantedAuthoritiesMapper = new NullAuthoritiesMapper();
 
     @Override
-    protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException{
-        if (httpServletRequest.getRequestURI().equals(NO_CHECK_URL)) {
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String requestURI = request.getRequestURI();
+
+        if (requestURI.equals(NO_CHECK_URL) || requestURI.equals(GET_URL)) {
+            filterChain.doFilter(request, response);
             return;
         }
 
-        String refreshToken = jwtService.extractRefreshToken(httpServletRequest)
+        String refreshToken = jwtService.extractRefreshToken(request)
                 .filter(jwtService::isTokenValid)
                 .orElse(null);
 
-        if (refreshToken != null) { // 재생성 토큰이 일치 한다면
-            checkRefreshTokenAndReIssueAccessToken(httpServletResponse, refreshToken); // 재생성 토큰 재발급
+        if (refreshToken != null) {
+            checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
             return;
         }
 
-        if (refreshToken == null) {
-            checkAccessTokenAuthorization(httpServletRequest, httpServletResponse, filterChain);
-        }
-
+        checkAccessTokenAuthorization(request, response, filterChain);
     }
+
 
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse httpServletResponse, String refreshToken) {
         memberRepository.findByRefreshToken(refreshToken)
@@ -64,23 +65,23 @@ public class JwtFilter extends OncePerRequestFilter {
                                               FilterChain filterChain) throws ServletException, IOException {
         log.info("checkAcessTokenAuthrization 호출");
         jwtService.extractAccessToken(httpServletRequest)
-                .filter(jwtService::isTokenValid)
-                .ifPresent(accessToken -> jwtService.extractName(accessToken)
-                        .ifPresent(name -> memberRepository.findByName(name)
-                                .ifPresent(this::saveAuthentication)));
+                .filter(jwtService::isTokenValid).flatMap(accessToken -> jwtService.extractName(accessToken).flatMap(memberRepository::findByName)).ifPresent(this::saveAuthentication);
 
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
 
     public void saveAuthentication(Member member) {
+        log.info(member.getName());
         UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
                 .username(member.getName())
                 .roles(member.getRole().name())
+                .password("")
                 .build();
 
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(userDetails, null,
                         grantedAuthoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
 
