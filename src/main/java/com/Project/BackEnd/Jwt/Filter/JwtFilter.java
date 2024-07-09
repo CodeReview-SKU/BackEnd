@@ -23,6 +23,7 @@ import java.io.IOException;
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
     private static final String NO_CHECK_URL = "/login"; // login은 해야하므로 여기로 들어오는 링크는 필터 x
+    private static final String GET_URL = "/board";
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
 

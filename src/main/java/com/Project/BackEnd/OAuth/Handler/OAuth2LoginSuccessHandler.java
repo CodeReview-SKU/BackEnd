@@ -22,6 +22,7 @@ import java.io.IOException;
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
+    private final String client = "http://localhost:5173";
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -32,10 +33,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
             if (oAuth2User.getRole() == Member.role.USER) {
                 String accessToken = jwtService.createAccessToken(oAuth2User.getName());
-                response.addHeader(jwtService.getAccessHeader(), "Bearer" + accessToken);
-                response.sendRedirect("oauth2/sign-up");
-
-                jwtService.sendAccessTokenAndRefreshToken(response, accessToken, null);
+                String id = oAuth2User.getEmail();
+                String redirectUrl = "http://localhost:5173/login/redirect?id=" + id + "&accessToken=" + accessToken;
+                response.sendRedirect(redirectUrl);
             }
             else {
                 loginSuccess(response, oAuth2User);
