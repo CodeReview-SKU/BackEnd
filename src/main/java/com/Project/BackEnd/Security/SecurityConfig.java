@@ -1,6 +1,5 @@
 package com.Project.BackEnd.Security;
 
-
 import com.Project.BackEnd.Jwt.Filter.JwtFilter;
 import com.Project.BackEnd.Jwt.Service.JwtService;
 import com.Project.BackEnd.Login.Handler.LoginFailureHandler;
@@ -12,7 +11,6 @@ import com.Project.BackEnd.OAuth.Handler.OAuth2LoginSuccessHandler;
 import com.Project.BackEnd.OAuth.Service.CustomOAuth2UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -28,11 +26,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfig{
+public class SecurityConfig {
     private final LoginService loginService;
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
@@ -41,6 +44,7 @@ public class SecurityConfig{
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
 
+    private final String client = "http://localhost:5173";
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -51,15 +55,14 @@ public class SecurityConfig{
                 .headers(httpSecurityHeadersConfigurer ->
                         httpSecurityHeadersConfigurer
                                 .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
-
-
                 .sessionManagement(httpSecuritySessionManagementConfigurer ->
                         httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
-                                .requestMatchers("/","/css/**","/images/**","/js/**","/favicon.ico","/h2-console/**","/static/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/comment/**").permitAll()
+                                .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**", "/static/**").permitAll()
                                 .requestMatchers("/signup").permitAll()
                                 .anyRequest().authenticated()
                 )
@@ -69,20 +72,32 @@ public class SecurityConfig{
                                 .failureHandler(oAuth2LoginFailureHandler)
                                 .userInfoEndpoint(userInfoEndpointConfig ->
                                         userInfoEndpointConfig.userService(customOAuth2UserService))
-                );
+                )
+                .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()));
 
         http.addFilterBefore(jwtFilter(), LogoutFilter.class);
 
         return http.build();
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of(client)); // 허용할 출처 설정
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
 
     @Bean
-    public AuthenticationManager authenticationManager () {
+    public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-
         provider.setUserDetailsService(loginService);
-
         return new ProviderManager(provider);
     }
 
@@ -98,7 +113,6 @@ public class SecurityConfig{
 
     @Bean
     public JwtFilter jwtFilter() {
-        JwtFilter jwtFilter = new JwtFilter(jwtService, memberRepository);
-        return jwtFilter;
+        return new JwtFilter(jwtService, memberRepository);
     }
 }

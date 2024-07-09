@@ -22,6 +22,7 @@ public class MemberController {
         return "Success sign up";
     }
 
+
     @GetMapping("/jwt-test")
     public String jwtTest() {
         return "Jwt success";
