@@ -44,6 +44,16 @@ public class MemberService {
         }
     }
 
+    public Member getMeberById(Long id) {
+        Optional<Member> member = this.memberRepository.findById(id);
+        if (member.isPresent()) {
+            return member.get();
+        }
+        else {
+            throw new DataNotFoundException("Data Not Found");
+        }
+    }
+
     public void update(Member member, String name) {
         member.setName(name);
         this.memberRepository.save(member);

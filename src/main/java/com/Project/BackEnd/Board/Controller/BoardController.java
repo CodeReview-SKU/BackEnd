@@ -5,6 +5,8 @@ import com.Project.BackEnd.Board.Entity.Board;
 import com.Project.BackEnd.Board.Entity.Board.*;
 import com.Project.BackEnd.Board.Form.BoardForm;
 import com.Project.BackEnd.Board.Service.BoardService;
+import com.Project.BackEnd.Member.Entity.Member;
+import com.Project.BackEnd.Member.Service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import java.util.List;
 @RestController
 public class BoardController {
     private final BoardService boardService;
+    private final MemberService memberService;
+
     @GetMapping("/list") //게시물 리스트 뷰어 컨트롤러
     public ResponseEntity<List<Board>> list() {
         List<Board> boardList = this.boardService.getBoardList();
@@ -29,11 +33,11 @@ public class BoardController {
         return ResponseEntity.ok(board);
     }
 
-    @ResponseBody
     @PostMapping(value = "/detail")
     public ResponseEntity<List<Board>> create(@RequestBody BoardDTO boardDTO)
     {
-        boardService.create(boardDTO.getMember(), boardDTO.getTitle(), boardDTO.getContent(), boardDTO.getCategory(), boardDTO.getTag());
+        Member member = memberService.getMeberById(Long.parseLong(boardDTO.getMember_id()));
+        boardService.create(member, boardDTO.getTitle(), boardDTO.getContent(), boardDTO.getCategory(), boardDTO.getTag());
 
         return ResponseEntity.ok(boardService.getBoardList());
     }
@@ -53,13 +57,13 @@ public class BoardController {
         return ResponseEntity.ok(boardService.getBoardList());
     }
 
-    @PutMapping(value = "/detail/{id}/code")
-    public ResponseEntity<Board> addSourceCode(@PathVariable long id, @RequestBody BoardDTO boardDTO) {
-        Board board = boardService.getBoard(id);
-        boardService.addSourceCode(board, boardDTO.getSource_code());
-
-        return new ResponseEntity<>(board, HttpStatus.OK);
-    }
+//    @PutMapping(value = "/detail/{id}/code")
+//    public ResponseEntity<Board> addSourceCode(@PathVariable long id, @RequestBody BoardDTO boardDTO) {
+//        Board board = boardService.getBoard(id);
+//        boardService.addSourceCode(board, boardDTO.getSource_code());
+//
+//        return new ResponseEntity<>(board, HttpStatus.OK);
+//    }
 
     @GetMapping(value = "/list/tag/{tag}")
     public ResponseEntity<List<Board>> listTag(@PathVariable tag tag) {

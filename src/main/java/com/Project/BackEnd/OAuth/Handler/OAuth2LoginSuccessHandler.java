@@ -33,8 +33,8 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
 
             if (oAuth2User.getRole() == Member.role.USER) {
                 String accessToken = jwtService.createAccessToken(oAuth2User.getName());
-                String id = oAuth2User.getEmail();
-                String redirectUrl = "http://localhost:5173/login/redirect?id=" + id + "&accessToken=" + accessToken;
+                long name = memberRepository.findByName(jwtService.extractName(accessToken).get()).get().getId();
+                String redirectUrl = "http://localhost:5173/login/redirect?name=" + name + "&accessToken=" + accessToken;
                 response.sendRedirect(redirectUrl);
             }
             else {
