@@ -14,8 +14,9 @@ public class BoardDTO {
     private String title;
     private String member_id;
     private String content;
-    private tag tag;
-    private category category;
+    private String source_code;
+    private String tag;
+    private String category;
 
 
 }
