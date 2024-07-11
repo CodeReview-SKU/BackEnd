@@ -20,12 +20,13 @@ public class BoardService {
 
 
     // 멤버, 제목, 내용, 카테고리, 북마크(0), 태그
-    public void create(Member member, String title, String content, // Create
+    public void create(Member member, String title, String content, String sourceCode, // Create
                        category category, tag tag) {
         Board board = new Board();
         board.setMember(member);
         board.setTitle(title);
         board.setContent(content);
+        board.setSource_code(sourceCode);
         board.setCategory(category);
         board.setBookmark_cnt(0); // 생성 당시의 북마크된 개수는 무조건 0.
         board.setTag(tag);

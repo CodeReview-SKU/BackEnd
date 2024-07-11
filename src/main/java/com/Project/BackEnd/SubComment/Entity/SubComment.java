@@ -28,6 +28,7 @@ public class SubComment {
     @Column(length = 1000)
     private String content;
 
+    @Column(columnDefinition = "INT DEFAULT 0")
     private int like_cnt;
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;

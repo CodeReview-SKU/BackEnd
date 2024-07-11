@@ -34,18 +34,29 @@ public class BoardController {
     }
 
     @PostMapping(value = "/detail")
-    public ResponseEntity<List<Board>> create(@RequestBody BoardDTO boardDTO)
+    public ResponseEntity<String> create(@RequestBody BoardDTO boardDTO)
     {
         Member member = memberService.getMeberById(Long.parseLong(boardDTO.getMember_id()));
-        boardService.create(member, boardDTO.getTitle(), boardDTO.getContent(), boardDTO.getCategory(), boardDTO.getTag());
 
-        return ResponseEntity.ok(boardService.getBoardList());
+        boardService.create(member,
+                boardDTO.getTitle(),
+                boardDTO.getContent(),
+                boardDTO.getSource_code(),
+                category.fromString(boardDTO.getCategory()),
+                tag.fromString(boardDTO.getTag())) ;
+
+        return ResponseEntity.ok("created success");
     }
 
     @PutMapping(value = "/detail/{id}")
     public ResponseEntity<List<Board>> modify(@PathVariable long id, @RequestBody BoardDTO boardDTO) {
         Board board = boardService.getBoard(id);
-        boardService.update(board, boardDTO.getTitle(), boardDTO.getContent(), boardDTO.getCategory(), boardDTO.getTag());
+
+        boardService.update(board,
+                boardDTO.getTitle(),
+                boardDTO.getContent(),
+                category.fromString(boardDTO.getCategory()),
+                tag.fromString(boardDTO.getTag()));
 
         return ResponseEntity.ok(boardService.getBoardList());
     }
@@ -56,14 +67,6 @@ public class BoardController {
 
         return ResponseEntity.ok(boardService.getBoardList());
     }
-
-//    @PutMapping(value = "/detail/{id}/code")
-//    public ResponseEntity<Board> addSourceCode(@PathVariable long id, @RequestBody BoardDTO boardDTO) {
-//        Board board = boardService.getBoard(id);
-//        boardService.addSourceCode(board, boardDTO.getSource_code());
-//
-//        return new ResponseEntity<>(board, HttpStatus.OK);
-//    }
 
     @GetMapping(value = "/list/tag/{tag}")
     public ResponseEntity<List<Board>> listTag(@PathVariable tag tag) {

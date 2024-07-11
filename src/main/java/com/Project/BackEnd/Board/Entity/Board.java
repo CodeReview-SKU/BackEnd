@@ -1,6 +1,7 @@
 package com.Project.BackEnd.Board.Entity;
 
 import com.Project.BackEnd.Member.Entity.Member;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
@@ -24,18 +25,21 @@ public class Board {
 
     @Size(min = 1, max = 200, message = "제목의 글자수는 1 ~ 200자로 작성하십시오.")
     @Column(length = 200, nullable = false)
-    private String title;
+    private String title;    @Size(min = 1, max = 3000, message = "본문의 글자수는 1 ~ 3000자로 작성하십시오.")
 
-    @Size(min = 1, max = 3000, message = "본문의 글자수는 1 ~ 3000자로 작성하십시오.")
     @Column(length = 3000, nullable = false)
     private String content;
 
+    @Column(columnDefinition = "mediumtext")
     private String source_code;
+
 
     private String image;
 
     @Enumerated(value = EnumType.STRING)
     private category category;
+
+
 
     public enum category {
         NOTICE("공지"),
@@ -51,6 +55,16 @@ public class Board {
         @JsonValue
         public String getCategory() {
             return category;
+        }
+
+        @JsonCreator
+        public static category fromString(String s) {
+            for (category t : values()) {
+                if (t.category.equalsIgnoreCase(s)) {
+                    return t;
+                }
+            }
+            throw new IllegalArgumentException("Unknown label: " + s);
         }
     }
 
@@ -70,19 +84,32 @@ public class Board {
         HASH("해시"),
         SORT("정렬");
 
-        private String tag;
+        private String label;
+
 
         tag(String tag) {
-                this.tag = tag;
+                this.label = tag;
             }
 
         @JsonValue
-        public String getTag() { return tag; }
+        public String getTag() { return label; }
+        @JsonCreator
+        public static tag fromString(String text) {
+            for (tag t : values()) {
+                if (t.label.equalsIgnoreCase(text)) {
+                    return t;
+                }
+            }
+            throw new IllegalArgumentException("Unknown label: " + text);
+        }
     }
 
     private LocalDateTime write_date;
 
     private LocalDateTime modified_date;
+
+    @Column(name = "like_count", nullable = false, columnDefinition = "INT DEFAULT 0")
+    private int likeCount;
 
     @PreUpdate //수정 시 일어나는 메소드 정의
     public void preUpdate(){
