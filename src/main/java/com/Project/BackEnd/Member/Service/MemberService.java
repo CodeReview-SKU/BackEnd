@@ -31,9 +31,6 @@ public class MemberService {
         this.memberRepository.save(member);
     }
 
-
-
-
     public Member getMember(String name) {
         Optional<Member> member = this.memberRepository.findByName(name);
         if (member.isPresent()) {
@@ -44,7 +41,7 @@ public class MemberService {
         }
     }
 
-    public Member getMeberById(Long id) {
+    public Member getMemberById(Long id) {
         Optional<Member> member = this.memberRepository.findById(id);
         if (member.isPresent()) {
             return member.get();

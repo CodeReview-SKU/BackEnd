@@ -67,6 +67,16 @@ public class BookMarkService {
         }
     }
 
+    public BookMark getBookMarkByMemberAndBoard(long memberId, long boardId) {
+        Optional<BookMark> bookMark = this.bookMarkRepository.findByMemberIdAndBoardId(memberId, boardId);
+        if (bookMark.isPresent()) {
+            return bookMark.get();
+        }
+        else {
+            throw new DataNotFoundException("Data Not Found");
+        }
+    }
+
     public void update(BookMark bookMark, Board board) {
         bookMark.setBoard(board);
         this.bookMarkRepository.save(bookMark);

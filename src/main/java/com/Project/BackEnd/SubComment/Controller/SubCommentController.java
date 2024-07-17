@@ -4,6 +4,7 @@ import com.Project.BackEnd.Comment.Entity.Comment;
 import com.Project.BackEnd.Comment.Service.CommentService;
 import com.Project.BackEnd.Member.Entity.Member;
 import com.Project.BackEnd.Member.Service.MemberService;
+import com.Project.BackEnd.SubComment.DTO.SubCommentDTO;
 import com.Project.BackEnd.SubComment.Entity.SubComment;
 import com.Project.BackEnd.SubComment.Service.SubCommentService;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +24,12 @@ public class SubCommentController {
     private final MemberService memberService;
 
     // 대댓글 생성
-    @PostMapping("/subcomments/comment/{id}")
-    public ResponseEntity<String> createSubComment(@PathVariable("id") Long id, @RequestBody SubComment subComment, Principal principal) {
+    @PostMapping("/create")
+    public ResponseEntity<String> createSubComment(@RequestBody SubCommentDTO subCommentDTO) {
         try {
-            Member member = this.memberService.getMember(principal.getName());
-            Comment comment = this.commentService.findById(id);
-            this.subCommentService.createSubComment(subComment.getContent(), member, comment);
+            Member member = this.memberService.getMemberById(Long.parseLong(subCommentDTO.getMember()));
+            Comment comment = this.commentService.findById(Long.parseLong(subCommentDTO.getBoardId()));
+            this.subCommentService.createSubComment(subCommentDTO.getContent(), member, comment);
             return ResponseEntity.ok("SubComment created successfully!");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error creating subComment: " + e.getMessage());
@@ -36,7 +37,7 @@ public class SubCommentController {
     }
 
     // 대댓글 수정
-    @PatchMapping("/subcomments/comment/{id}")
+    @PatchMapping("/comment/{id}")
     public ResponseEntity<String> modifySubComment(@PathVariable("id") Long id, @RequestBody SubComment subComment,
                                                 Principal principal) {
         try {
@@ -53,7 +54,7 @@ public class SubCommentController {
     }
 
     // 대댓글 삭제
-    @DeleteMapping("/subcomments/comment/{id}")
+    @DeleteMapping("/comment/{id}")
     public ResponseEntity<String> deleteSubComment(@PathVariable("id") Long id, Principal principal) {
         try {
             SubComment subComment = this.subCommentService.findById(id);
