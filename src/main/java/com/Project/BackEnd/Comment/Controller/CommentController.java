@@ -29,12 +29,11 @@ public class CommentController {
     // 댓글 생성
     @PostMapping("/comments")
     public ResponseEntity<String> createComment(@RequestBody CommentCreateDTO comment){
-        log.info(comment.getContent());
-        log.info(comment.getBoard_id());
-        log.info(comment.getName());
-
+//        log.info(comment.getContent());
+//        log.info(comment.getBoard_id());
+//        log.info(comment.getName());
         try {
-            Member member = this.memberService.getMeberById(Long.parseLong(comment.getName()));
+            Member member = this.memberService.getMemberById(Long.parseLong(comment.getName()));
             Board board = this.boardService.getBoard(Long.parseLong(comment.getBoard_id()));
             this.commentService.createComment(comment.getContent(), member, board);
             return ResponseEntity.ok("Comment created successfully!");
@@ -46,15 +45,26 @@ public class CommentController {
     // Member id 기준 댓글 조회
     @GetMapping("/member/{id}")
     public ResponseEntity<List<Comment>> commentFindByMemberId(@PathVariable Long id){
-        List<Comment> comments = this.commentService.findByMemberId(id);
-        return ResponseEntity.ok(comments);
+        try{
+
+            List<Comment> comments = this.commentService.findByMemberId(id);
+            return ResponseEntity.ok(comments);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
     // Board id 기준 댓글 조회
     @GetMapping("/board/{id}")
     public ResponseEntity<List<Comment>> commentFindByBoardId(@PathVariable Long id){
-        List<Comment> comments = this.commentService.findByBoardId(id);
-        return ResponseEntity.ok(comments);
+        try {
+            List<Comment> comments = this.commentService.findByBoardId(id);
+            return ResponseEntity.ok(comments);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(500).body(null);
+        }
     }
 
     // Comment 수정

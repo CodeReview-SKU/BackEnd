@@ -13,14 +13,6 @@ import lombok.Setter;
 
 public class BookMarkDTO {
 
-    private long id;
-    private Member member;
-    private Board board;
-
-    @JsonCreator
-    public BookMarkDTO(BookMark bookMark) {
-        this.id = bookMark.getId();
-        this.member = bookMark.getMember();
-        this.board = bookMark.getBoard();
-    }
+    private String member;
+    private String board;
 }

@@ -93,6 +93,10 @@ public class BoardService {
         return list;
     }
 
+    public List<Board> getBoardListByMember(long memberId) {
+        return boardRepository.findByMemberId(memberId);
+    }
+
     public List<Board> getBoardListByCategory(category category) { // 카테고리 별로 탐색
         List<Board> list = boardRepository.findAll();
         list.removeIf(l -> !l.getCategory().equals(category));
