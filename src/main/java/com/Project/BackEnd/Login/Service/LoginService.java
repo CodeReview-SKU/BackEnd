@@ -17,13 +17,14 @@ public class LoginService implements UserDetailsService {
     private final MemberRepository memberRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
-        Member member = memberRepository.findByName(name)
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        Member member = memberRepository.findByName(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("존재하지 않는 유저"));
 
 
         return org.springframework.security.core.userdetails.User.builder()
-                .username(name)
+                .username(userId)
+                .password(member.getPassword())
                 .roles(member.getRole().name())
                 .build();
 

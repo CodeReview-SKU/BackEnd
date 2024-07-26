@@ -21,10 +21,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
-import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -49,7 +49,6 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(httpSecurityHeadersConfigurer ->
@@ -60,10 +59,12 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
+                                .requestMatchers(HttpMethod.GET,"/member/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/member/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/comment/**").permitAll()
                                 .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**", "/static/**").permitAll()
-                                .requestMatchers("/signup").permitAll()
+                                .requestMatchers("/signup", "/login", "/oauth2/**").permitAll()
                                 .anyRequest().authenticated()
                 )
 
@@ -73,9 +74,14 @@ public class SecurityConfig {
                                 .userInfoEndpoint(userInfoEndpointConfig ->
                                         userInfoEndpointConfig.userService(customOAuth2UserService))
                 )
+                .formLogin(formLogin ->
+                        formLogin
+                                .permitAll()
+                                .successHandler(loginSuccessHandler())
+                )
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()));
 
-        http.addFilterBefore(jwtFilter(), LogoutFilter.class);
+        http.addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -99,6 +105,11 @@ public class SecurityConfig {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(loginService);
         return new ProviderManager(provider);
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean

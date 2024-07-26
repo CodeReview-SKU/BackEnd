@@ -24,7 +24,7 @@ import java.io.IOException;
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
     private static final String NO_CHECK_URL = "/login"; // login은 해야하므로 여기로 들어오는 링크는 필터 x
-    private static final String GET_URL = "/board";
+    private static final String NO_CHECK = "/member";
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
 
@@ -33,8 +33,8 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
-
-        if (requestURI.equals(NO_CHECK_URL) || requestURI.equals(GET_URL)) {
+        log.info(requestURI);
+        if (requestURI.equals(NO_CHECK_URL) ) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -72,16 +72,31 @@ public class JwtFilter extends OncePerRequestFilter {
 
     public void saveAuthentication(Member member) {
         log.info(member.getName());
-        UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
-                .username(member.getName())
-                .roles(member.getRole().name())
-                .password("")
-                .build();
+        if(member.getPassword() == null) {
+            UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
+                    .username(member.getName())
+                    .roles(member.getRole().name())
+                    .password("")
+                    .build();
 
-        Authentication authentication =
-                new UsernamePasswordAuthenticationToken(userDetails, null,
-                        grantedAuthoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            Authentication authentication =
+                    new UsernamePasswordAuthenticationToken(userDetails, null,
+                            grantedAuthoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        else {
+
+            UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
+                    .username(member.getName())
+                    .roles(member.getRole().name())
+                    .password(member.getPassword())
+                    .build();
+
+            Authentication authentication =
+                    new UsernamePasswordAuthenticationToken(userDetails, member.getPassword(),
+                            grantedAuthoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
     }
 
 

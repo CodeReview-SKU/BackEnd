@@ -34,6 +34,10 @@ public class Member {
         }
     }
 
+    private String userId;
+
+    private String password;
+
     @Enumerated(value = EnumType.STRING)
     private role role;
 
@@ -61,5 +65,12 @@ public class Member {
         this.role = role;
     }
 
+    @Builder
+    public Member(String userId, String password, String name, role role) {
+        this.userId = userId;
+        this.password = password;
+        this.name = name;
+        this.role = role;
+    }
 
 }
