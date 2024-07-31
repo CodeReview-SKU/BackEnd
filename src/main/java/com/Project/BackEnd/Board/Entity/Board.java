@@ -108,7 +108,7 @@ public class Board {
 
     private LocalDateTime modified_date;
 
-    @Column(name = "like_count", nullable = false, columnDefinition = "INT DEFAULT 0")
+    @Column(nullable = false, columnDefinition = "INT DEFAULT 0")
     private int likeCount;
 
     @PreUpdate //수정 시 일어나는 메소드 정의
