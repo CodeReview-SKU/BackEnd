@@ -4,6 +4,7 @@ import com.Project.BackEnd.Board.Entity.Board;
 import com.Project.BackEnd.Board.Repository.BoardRepository;
 import com.Project.BackEnd.DataNotFoundException;
 import com.Project.BackEnd.Member.Entity.Member;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -109,5 +110,25 @@ public class BoardService {
         list.removeIf(l -> !l.getTag().equals(tag));
         list.sort(Comparator.comparing(Board::getWrite_date));
         return list;
+    }
+
+    @Transactional
+    public void upLikeCount(long boardId) {
+        try {
+            this.boardRepository.incrementLikeCount(boardId);
+        }
+        catch (Exception e) {
+            throw new DataNotFoundException("Data Not Found " + e.getMessage());
+        }
+    }
+
+    @Transactional
+    public void downLikeCount(long boardId) {
+        try {
+            this.boardRepository.decrementLikeCount(boardId);
+        }
+        catch (Exception e) {
+            throw new DataNotFoundException("Data Not Found " + e.getMessage());
+        }
     }
 }

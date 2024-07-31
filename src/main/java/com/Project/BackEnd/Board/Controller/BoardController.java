@@ -68,10 +68,10 @@ public class BoardController {
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<List<Board>> delete(@PathVariable long id) {
+    public ResponseEntity<String> delete(@PathVariable long id) {
         try {
             boardService.delete(boardService.getBoard(id));
-            return ResponseEntity.ok(boardService.getBoardList());
+            return ResponseEntity.ok("deleted");
         }
         catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

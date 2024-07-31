@@ -78,19 +78,16 @@ public class CommentController {
             }
             commentService.modifyComment(comment.getContent(),comment);
             return ResponseEntity.ok("Comment modified successfully!");
-        }catch (Exception e){
+        }
+        catch (Exception e){
             return  ResponseEntity.status(500).body("Error modifying comment: " + e.getMessage());
         }
     }
 
     // Comment 삭제
-    @DeleteMapping("/comments/{id}")
-    public ResponseEntity<String> deleteComment(@PathVariable("id") Long id, Principal principal){
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteComment(@PathVariable("id") Long id){
         try {
-            Comment comment = this.commentService.findById(id);
-            if(!comment.getMember().getName().equals(principal.getName())){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
-            }
             this.commentService.deleteComment(id);
             return ResponseEntity.ok("Comment deleted successfully!");
         } catch (Exception e) {
