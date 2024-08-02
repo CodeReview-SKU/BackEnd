@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -28,13 +29,14 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("OAuth2 Login 성공");
         log.info("로그인한 사용자 : {}", authentication.getName());
+        log.info(SecurityContextHolder.getContext().toString());
         try {
             CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
 
             if (oAuth2User.getRole() == Member.role.USER) {
                 String accessToken = jwtService.createAccessToken(oAuth2User.getName());
                 long name = memberRepository.findByName(jwtService.extractName(accessToken).get()).get().getId();
-                String redirectUrl = "http://localhost:5173/login/redirect?name=" + name + "&accessToken=" + accessToken;
+                String redirectUrl = client + "/login/redirect?name=" + name + "&accessToken=" + accessToken;
                 response.sendRedirect(redirectUrl);
             }
             else {

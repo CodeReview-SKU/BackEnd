@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.awt.print.Book;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,16 +21,18 @@ import java.util.Optional;
 public class BookMarkService {
     private final BookMarkRepository bookMarkRepository;
     private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
 
 
-    public List<BookMark> getBookMarkByMember(String name) {
-        Optional<Member> member = this.memberRepository.findByName(name);
-        List<BookMark> bookMark = this.bookMarkRepository.findByMember(member);
-        if (! bookMark.isEmpty()) {
+    public List<BookMark> getBookMarkByMember(String id) {
+        Optional<Member> member = this.memberRepository.findById(Long.parseLong(id));
+        List<BookMark> bookMark = this.bookMarkRepository.findByMember(member.get());
+
+        if (!bookMark.isEmpty()) {
             return bookMark;
         }
         else {
-            throw new DataNotFoundException("Data not Found");
+            return null;
         }
     }
 
@@ -54,8 +57,6 @@ public class BookMarkService {
         bookMark.setBoard(board);
         this.bookMarkRepository.save(bookMark);
     }
-
-
 
     public BookMark getBookMark(long id) {
         Optional<BookMark> bookMark = this.bookMarkRepository.findById(id);

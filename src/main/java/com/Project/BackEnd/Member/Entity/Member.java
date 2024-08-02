@@ -34,6 +34,8 @@ public class Member {
         }
     }
 
+    private String email;
+
     private String userId;
 
     private String password;
