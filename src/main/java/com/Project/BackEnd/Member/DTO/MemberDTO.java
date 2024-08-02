@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class MemberDTO {
     private String name;
+    private String email;
     private String userId;
     private String password;
 

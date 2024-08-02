@@ -5,6 +5,8 @@ import com.Project.BackEnd.Board.Repository.BoardRepository;
 import com.Project.BackEnd.DataNotFoundException;
 import com.Project.BackEnd.Member.Entity.Member;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotNull;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -18,7 +20,6 @@ import com.Project.BackEnd.Board.Entity.Board.tag;
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
-
 
     // 멤버, 제목, 내용, 카테고리, 북마크(0), 태그
     public void create(Member member, String title, String content, String sourceCode, // Create

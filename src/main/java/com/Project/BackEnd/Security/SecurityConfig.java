@@ -9,7 +9,6 @@ import com.Project.BackEnd.Member.Repository.MemberRepository;
 import com.Project.BackEnd.OAuth.Handler.OAuth2LoginFailureHandler;
 import com.Project.BackEnd.OAuth.Handler.OAuth2LoginSuccessHandler;
 import com.Project.BackEnd.OAuth.Service.CustomOAuth2UserService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +16,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -39,12 +40,10 @@ public class SecurityConfig {
     private final LoginService loginService;
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
-    private final ObjectMapper objectMapper;
     private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
-
-    private final String client = "http://localhost:5173";
+    private String client = "http://localhost:5173";
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -76,8 +75,9 @@ public class SecurityConfig {
                 )
                 .formLogin(formLogin ->
                         formLogin
-                                .permitAll()
                                 .successHandler(loginSuccessHandler())
+                                .failureHandler(loginFailureHandler())
+                                .permitAll()
                 )
                 .cors(corsCustomizer -> corsCustomizer.configurationSource(corsConfigurationSource()));
 
@@ -104,6 +104,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(loginService);
+        provider.setPasswordEncoder(bCryptPasswordEncoder());
         return new ProviderManager(provider);
     }
 

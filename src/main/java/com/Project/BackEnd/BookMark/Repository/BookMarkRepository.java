@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface BookMarkRepository extends JpaRepository<BookMark, Long> {
-    List<BookMark> findByMember(Optional<Member> member);
+    List<BookMark> findByMember(Member member);
     List<BookMark> findByBoard(Board board);
     Optional<BookMark> findByMemberIdAndBoardId(long memberId, long boardId);
 }

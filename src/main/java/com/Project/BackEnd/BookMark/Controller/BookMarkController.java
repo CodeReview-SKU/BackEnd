@@ -31,9 +31,9 @@ public class BookMarkController {
     private final BoardService boardService;
 
 
-    @GetMapping("/list/{name}")
-    public ResponseEntity<List<BookMark>> bookMarkDetail(@PathVariable String name) {
-        List<BookMark> bookMarks = this.bookMarkService.getBookMarkByMember(name);
+    @GetMapping("/list/{id}")
+    public ResponseEntity<List<BookMark>> bookMarkDetail(@PathVariable String id) {
+        List<BookMark> bookMarks = this.bookMarkService.getBookMarkByMember(id);
         return ResponseEntity.ok(bookMarks);
     }
 
