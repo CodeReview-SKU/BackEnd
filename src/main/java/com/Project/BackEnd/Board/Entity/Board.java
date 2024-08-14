@@ -23,9 +23,9 @@ public class Board {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Size(min = 1, max = 200, message = "제목의 글자수는 1 ~ 200자로 작성하십시오.")
+    //@Size(min = 1, max = 200, message = "제목의 글자수는 1 ~ 200자로 작성하십시오.")
     @Column(length = 200, nullable = false)
-    private String title;    @Size(min = 1, max = 3000, message = "본문의 글자수는 1 ~ 3000자로 작성하십시오.")
+    private String title;    //@Size(min = 1, max = 3000, message = "본문의 글자수는 1 ~ 3000자로 작성하십시오.")
 
     @Column(length = 3000, nullable = false)
     private String content;
@@ -67,8 +67,6 @@ public class Board {
             throw new IllegalArgumentException("Unknown label: " + s);
         }
     }
-
-    private int bookmark_cnt;
 
     @Enumerated(value = EnumType.STRING)
     private tag tag;
