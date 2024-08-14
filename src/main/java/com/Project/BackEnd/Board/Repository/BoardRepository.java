@@ -2,6 +2,7 @@ package com.Project.BackEnd.Board.Repository;
 
 import com.Project.BackEnd.Board.Entity.Board;
 import com.Project.BackEnd.Member.Entity.Member;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
