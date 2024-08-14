@@ -1,6 +1,8 @@
 package com.Project.BackEnd.Board.Controller;
 
 import com.Project.BackEnd.Board.Dto.BoardDTO;
+import com.Project.BackEnd.Board.Dto.BoardDetailDTO;
+import com.Project.BackEnd.Board.Dto.BoardInfoDTO;
 import com.Project.BackEnd.Board.Entity.Board;
 import com.Project.BackEnd.Board.Entity.Board.*;
 import com.Project.BackEnd.Board.Service.BoardService;
@@ -21,15 +23,15 @@ public class BoardController {
     private final MemberService memberService;
 
     @GetMapping("/list") //게시물 리스트 뷰어 컨트롤러
-    public ResponseEntity<List<Board>> list() {
-        List<Board> boardList = this.boardService.getBoardList();
+    public ResponseEntity<List<BoardInfoDTO>> list() {
+        List<BoardInfoDTO> boardList = this.boardService.getBoardList();
         return ResponseEntity.ok(boardList);
     }
 
     @GetMapping("/detail/{id}") //게시물 상세 내용을 보여주는 컨트롤러
-    public ResponseEntity<Board> detail(@PathVariable long id) {
+    public ResponseEntity<BoardDetailDTO> detail(@PathVariable long id) {
         try{
-            Board board = this.boardService.getBoard(id);
+            BoardDetailDTO board = this.boardService.getBoardDetail(id);
             return ResponseEntity.ok(board);
         }
         catch (Exception e) {
@@ -55,7 +57,7 @@ public class BoardController {
     }
 
     @PutMapping(value = "/detail/{id}")
-    public ResponseEntity<List<Board>> modify(@PathVariable long id, @RequestBody BoardDTO boardDTO) {
+    public ResponseEntity<List<BoardInfoDTO>> modify(@PathVariable long id, @RequestBody BoardDTO boardDTO) {
         Board board = boardService.getBoard(id);
 
         boardService.update(board,
@@ -79,9 +81,9 @@ public class BoardController {
     }
 
     @GetMapping("/list/{memberId}")
-    public ResponseEntity<List<Board>> getListByMemberId(@PathVariable String memberId) {
+    public ResponseEntity<List<BoardInfoDTO>> getListByMemberId(@PathVariable String memberId) {
             //Member member = memberService.getMemberById(Long.parseLong(memberId));
-            return ResponseEntity.ok(this.boardService.getBoardListByMember(Long.parseLong(memberId)));
+        return ResponseEntity.ok(this.boardService.getBoardListByMember(Long.parseLong(memberId)));
     }
 
     // **** 이미지 추가 컨트롤러 추가 해야함. ****
