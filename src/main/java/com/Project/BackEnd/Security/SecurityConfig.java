@@ -58,10 +58,10 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
-                                .requestMatchers(HttpMethod.GET,"/member/**").permitAll()
-                                .requestMatchers(HttpMethod.POST,"/member/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/board/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/comment/**").permitAll()
+                                .requestMatchers(HttpMethod.GET,"/api/member/**").permitAll()
+                                .requestMatchers(HttpMethod.POST,"/api/member/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/board/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/comment/**").permitAll()
                                 .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**", "/static/**").permitAll()
                                 .requestMatchers("/signup", "/login", "/oauth2/**").permitAll()
                                 .anyRequest().authenticated()

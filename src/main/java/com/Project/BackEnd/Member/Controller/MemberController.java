@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/member")
+@RequestMapping("/api/member")
 @RequiredArgsConstructor
 @Slf4j
 public class MemberController {
