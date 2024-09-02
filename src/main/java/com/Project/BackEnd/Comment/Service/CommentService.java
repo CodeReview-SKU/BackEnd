@@ -1,7 +1,10 @@
 package com.Project.BackEnd.Comment.Service;
 
 
+import com.Project.BackEnd.Board.Dto.BoardDetailDTO;
 import com.Project.BackEnd.Board.Entity.Board;
+import com.Project.BackEnd.Comment.DTO.CommentDetailDTO;
+import com.Project.BackEnd.Comment.DTO.CommentInfoDTO;
 import com.Project.BackEnd.Comment.Entity.Comment;
 import com.Project.BackEnd.Comment.Repository.CommentRepository;
 import com.Project.BackEnd.DataNotFoundException;
@@ -49,6 +52,31 @@ public class CommentService {
         }
         else {
             throw new DataNotFoundException("Comment not found");
+        }
+    }
+    /*
+    *** member 객체로 Comment Detail 조회 / 프로필 조회 목적
+     */
+    public List<CommentDetailDTO> getCommentDetail(Long id) {
+        List<CommentDetailDTO> comment = this.commentRepository.findDetailByMember(id);
+        if(comment == null) {
+            throw new DataNotFoundException("Comment Not Found");
+        }
+        else {
+            return comment;
+        }
+    }
+
+    /*
+    *** Board 객체로 Comment Info 조회 / 보드 댓글 조회 목적
+     */
+    public List<CommentInfoDTO> getCommentInfo(Long id) {
+        List<CommentInfoDTO> comment = this.commentRepository.findInfoByBoard(id);
+        if (comment == null) {
+            throw new DataNotFoundException("Comment Not Found");
+        }
+        else {
+            return comment;
         }
     }
 

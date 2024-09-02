@@ -21,6 +21,8 @@ public class Comment {
     @JoinColumn(name = "board_id")
     private Board board;
 
+    private String boardTitle;
+
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;

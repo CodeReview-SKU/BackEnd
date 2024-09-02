@@ -3,6 +3,8 @@ package com.Project.BackEnd.Comment.Controller;
 import com.Project.BackEnd.Board.Entity.Board;
 import com.Project.BackEnd.Board.Service.BoardService;
 import com.Project.BackEnd.Comment.DTO.CommentCreateDTO;
+import com.Project.BackEnd.Comment.DTO.CommentDetailDTO;
+import com.Project.BackEnd.Comment.DTO.CommentInfoDTO;
 import com.Project.BackEnd.Comment.Entity.Comment;
 import com.Project.BackEnd.Comment.Service.CommentService;
 import com.Project.BackEnd.Member.Entity.Member;
@@ -66,6 +68,33 @@ public class CommentController {
             return ResponseEntity.status(500).body(null);
         }
     }
+    /*
+    *** Member 객체로 Lsit 조회
+     */
+    @GetMapping("/member/{id}")
+    public ResponseEntity<List<CommentDetailDTO>> commentFindByMember(@PathVariable Long id){
+        try {
+            List<CommentDetailDTO> comment = this.commentService.getCommentDetail(id);
+            return ResponseEntity.ok(comment);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+    /*
+    *** Board 객체로 List 조회
+     */
+    @GetMapping("/board/{id}")
+    public ResponseEntity<List<CommentInfoDTO>> commentFindByBoard(@PathVariable Long id) {
+        try {
+            List<CommentInfoDTO> comment = this.commentService.getCommentInfo(id);
+            return ResponseEntity.ok(comment);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
 
     // Comment 수정
     @PatchMapping("/comments/{id}")
