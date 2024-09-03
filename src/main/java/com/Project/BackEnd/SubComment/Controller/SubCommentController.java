@@ -5,6 +5,8 @@ import com.Project.BackEnd.Comment.Service.CommentService;
 import com.Project.BackEnd.Member.Entity.Member;
 import com.Project.BackEnd.Member.Service.MemberService;
 import com.Project.BackEnd.SubComment.DTO.SubCommentDTO;
+import com.Project.BackEnd.SubComment.DTO.SubCommentDetailDTO;
+import com.Project.BackEnd.SubComment.DTO.SubCommentInfoDTO;
 import com.Project.BackEnd.SubComment.Entity.SubComment;
 import com.Project.BackEnd.SubComment.Service.SubCommentService;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +16,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/subcomment")
+@RequestMapping("/api/subcomment")
 public class SubCommentController {
     private final CommentService commentService;
     private final SubCommentService subCommentService;
@@ -33,6 +36,34 @@ public class SubCommentController {
             return ResponseEntity.ok("SubComment created successfully!");
         } catch (Exception e) {
             return ResponseEntity.status(500).body("Error creating subComment: " + e.getMessage());
+        }
+    }
+
+    /*
+    *** 대댓글 조회 -> comment id 기준으로 subComment List 반환
+     */
+    @GetMapping("/comment/{id}")
+    public ResponseEntity<List<SubCommentInfoDTO>> getSubCommentInfo(@PathVariable("id") Long id){
+        try{
+            List<SubCommentInfoDTO> subComment = this.subCommentService.getSubCommentInfo(id);
+            return ResponseEntity.ok(subComment);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
+    /*
+    *** 프로필에서 대댓글 조회 목적 -> member id 기준으로 subComment List 반환
+     */
+    @GetMapping("/member/{id}")
+    public ResponseEntity<List<SubCommentDetailDTO>> getSubCommentDetail(@PathVariable("id") Long id) {
+        try{
+            List<SubCommentDetailDTO> subComment = this.subCommentService.getSubCommentDetail(id);
+            return ResponseEntity.ok(subComment);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 
