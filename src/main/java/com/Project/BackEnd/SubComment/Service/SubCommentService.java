@@ -4,6 +4,8 @@ package com.Project.BackEnd.SubComment.Service;
 import com.Project.BackEnd.Comment.Entity.Comment;
 import com.Project.BackEnd.DataNotFoundException;
 import com.Project.BackEnd.Member.Entity.Member;
+import com.Project.BackEnd.SubComment.DTO.SubCommentDetailDTO;
+import com.Project.BackEnd.SubComment.DTO.SubCommentInfoDTO;
 import com.Project.BackEnd.SubComment.Entity.SubComment;
 import com.Project.BackEnd.SubComment.Repository.SubCommentRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +34,11 @@ public class SubCommentService {
 
     // Read
     // comment id 기준 대댓글 조회
+    /*
     public List<SubComment> findByCommentId(Long commentId){
         return subCommentRepository.findByCommentId(commentId);
     }
+     */
 
     public SubComment findById(Long id){
         Optional<SubComment> subComment = this.subCommentRepository.findById(id);
@@ -42,6 +46,31 @@ public class SubCommentService {
             return subComment.get();
         }else {
             throw new DataNotFoundException("SubComment not found");
+        }
+    }
+
+    /*
+    *** SubCommentInfoDTO로 comment id 기준으로 대댓글 조회
+     */
+    public List<SubCommentInfoDTO> getSubCommentInfo(Long id) {
+        List<SubCommentInfoDTO> subComment = this.subCommentRepository.findByCommentId(id);
+        if(subComment.isEmpty()){
+            throw new DataNotFoundException("SubComment not found");
+        }
+        else{
+            return subComment;
+        }
+    }
+    /*
+    *** SubCommentDetailDTO로 member id 기준으로 대댓글 조회
+     */
+    public List<SubCommentDetailDTO> getSubCommentDetail(Long id) {
+        List<SubCommentDetailDTO> subComment = this.subCommentRepository.findByMemberId(id);
+        if (subComment.isEmpty()){
+            throw new DataNotFoundException("SubComment not found");
+        }
+        else{
+            return subComment;
         }
     }
 
