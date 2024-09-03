@@ -35,12 +35,12 @@ public class SubCommentService {
     // Read
     // comment id 기준 대댓글 조회
     /*
-    public List<SubComment> findByCommentId(Long commentId){
+    public List<SubComment> findByCommentId(long commentId){
         return subCommentRepository.findByCommentId(commentId);
     }
      */
 
-    public SubComment findById(Long id){
+    public SubComment findById(long id){
         Optional<SubComment> subComment = this.subCommentRepository.findById(id);
         if (subComment.isPresent()){
             return subComment.get();
@@ -52,26 +52,14 @@ public class SubCommentService {
     /*
     *** SubCommentInfoDTO로 comment id 기준으로 대댓글 조회
      */
-    public List<SubCommentInfoDTO> getSubCommentInfo(Long id) {
-        List<SubCommentInfoDTO> subComment = this.subCommentRepository.findByCommentId(id);
-        if(subComment.isEmpty()){
-            throw new DataNotFoundException("SubComment not found");
-        }
-        else{
-            return subComment;
-        }
+    public List<SubCommentInfoDTO> getSubCommentInfo(long id) {
+        return this.subCommentRepository.findByCommentId(id);
     }
     /*
     *** SubCommentDetailDTO로 member id 기준으로 대댓글 조회
      */
-    public List<SubCommentDetailDTO> getSubCommentDetail(Long id) {
-        List<SubCommentDetailDTO> subComment = this.subCommentRepository.findByMemberId(id);
-        if (subComment.isEmpty()){
-            throw new DataNotFoundException("SubComment not found");
-        }
-        else{
-            return subComment;
-        }
+    public List<SubCommentDetailDTO> getSubCommentDetail(long id) {
+        return this.subCommentRepository.findByMemberId(id);
     }
 
     // Update 대댓글 수정
@@ -82,7 +70,7 @@ public class SubCommentService {
     }
 
     // Delete 대댓글 삭제
-    public void deleteSubComment(Long subCommentId){
+    public void deleteSubComment(long subCommentId){
         this.subCommentRepository.deleteById(subCommentId);
     }
 
