@@ -36,16 +36,16 @@ public class CommentService {
 
     // Read
     // 게시물 id 기준 댓글 조회
-    public List<Comment> findByBoardId(Long boardId){
+    public List<Comment> findByBoardId(long boardId){
         return commentRepository.findByBoardId(boardId);
     }
     // 멤버 id 기준 댓글 조회
-    public List<Comment> findByMemberId(Long memberId){
+    public List<Comment> findByMemberId(long memberId){
         return commentRepository.findByMemberId(memberId);
     }
 
     // id 기준 조회
-    public Comment findById(Long id){
+    public Comment findById(long id){
         Optional<Comment> comment = this.commentRepository.findById(id);
         if(comment.isPresent()){
             return comment.get();
@@ -57,27 +57,15 @@ public class CommentService {
     /*
     *** member 객체로 Comment Detail 조회 / 프로필 조회 목적
      */
-    public List<CommentDetailDTO> getCommentDetail(Long id) {
-        List<CommentDetailDTO> comment = this.commentRepository.findDetailByMember(id);
-        if(comment == null) {
-            throw new DataNotFoundException("Comment Not Found");
-        }
-        else {
-            return comment;
-        }
+    public List<CommentDetailDTO> getCommentDetail(long id) {
+        return this.commentRepository.findDetailByMember(id);
     }
 
     /*
     *** Board 객체로 Comment Info 조회 / 보드 댓글 조회 목적
      */
-    public List<CommentInfoDTO> getCommentInfo(Long id) {
-        List<CommentInfoDTO> comment = this.commentRepository.findInfoByBoard(id);
-        if (comment == null) {
-            throw new DataNotFoundException("Comment Not Found");
-        }
-        else {
-            return comment;
-        }
+    public List<CommentInfoDTO> getCommentInfo(long id) {
+        return this.commentRepository.findInfoByBoard(id);
     }
 
     // Update 댓글 수정
@@ -88,7 +76,7 @@ public class CommentService {
     }
 
     // Delete 댓글 삭제
-    public void deleteComment(Long commentId){
+    public void deleteComment(long commentId){
         this.commentRepository.deleteById(commentId);
     }
 }
