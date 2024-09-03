@@ -2,6 +2,7 @@ package com.Project.BackEnd.BookMark.Service;
 
 import com.Project.BackEnd.Board.Entity.Board;
 import com.Project.BackEnd.Board.Repository.BoardRepository;
+import com.Project.BackEnd.BookMark.DTO.BookMarkDetailDTO;
 import com.Project.BackEnd.BookMark.Entity.BookMark;
 import com.Project.BackEnd.BookMark.Repository.BookMarkRepository;
 import com.Project.BackEnd.DataNotFoundException;
@@ -85,6 +86,13 @@ public class BookMarkService {
 
     public void delete(BookMark bookMark) {
         this.bookMarkRepository.delete(bookMark);
+    }
+
+    /*
+    *** member id 기준 북마크 조회 -> 프로필 조회 목적
+     */
+    public List<BookMarkDetailDTO> getBookMarkDetail(long id) {
+        return this.bookMarkRepository.findByMemberId(id);
     }
 
 

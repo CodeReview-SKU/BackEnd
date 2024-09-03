@@ -4,6 +4,7 @@ package com.Project.BackEnd.BookMark.Controller;
 import com.Project.BackEnd.Board.Entity.Board;
 import com.Project.BackEnd.Board.Service.BoardService;
 import com.Project.BackEnd.BookMark.DTO.BookMarkDTO;
+import com.Project.BackEnd.BookMark.DTO.BookMarkDetailDTO;
 import com.Project.BackEnd.BookMark.Entity.BookMark;
 import com.Project.BackEnd.BookMark.Service.BookMarkService;
 import com.Project.BackEnd.Member.Entity.Member;
@@ -91,5 +92,17 @@ public class BookMarkController {
                         .getBookMarkCount(this.boardService.getBoard(id)));
     }
 
+    /*
+    *** member id 기준 bookMark 조회 -> 프로필 조회 목적
+     */
+    @GetMapping("/member/{id}")
+    public ResponseEntity<List<BookMarkDetailDTO>> getBookMarkDetail(@PathVariable("id") long id) {
+        try {
+            List<BookMarkDetailDTO> bookMark = this.bookMarkService.getBookMarkDetail(id);
+            return ResponseEntity.ok(bookMark);
+        } catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
 }
