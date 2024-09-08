@@ -2,6 +2,7 @@ package com.Project.BackEnd.Member.Service;
 
 import com.Project.BackEnd.DataNotFoundException;
 import com.Project.BackEnd.Jwt.Service.JwtService;
+import com.Project.BackEnd.Member.DTO.MemberDTO;
 import com.Project.BackEnd.Member.DTO.loginInfo;
 import com.Project.BackEnd.Member.Entity.Member;
 import com.Project.BackEnd.Member.Repository.MemberRepository;
@@ -93,6 +94,18 @@ public class MemberService {
         }
         else {
             throw new DataNotFoundException("Data Not Found");
+        }
+    }
+
+    /*
+    *** 프로필 조회 목적
+     */
+    public MemberDTO getMemberDetailById(long id){
+        MemberDTO member = this.memberRepository.findByUserId2(id);
+        if (member == null){
+            throw new DataNotFoundException("Member not found");
+        }else {
+            return member;
         }
     }
 
