@@ -16,7 +16,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByRefreshToken(String refreshToken);
     Optional<Member> findByUserId(String userId);
 
-    @Query("select new com.Project.BackEnd.Member.DTO.MemberDTO(m.id, m.name, m.email, m.userId, m.password)" +
+    @Query("select new com.Project.BackEnd.Member.DTO.MemberDTO(m.id, m.name, m.email, m.userId)" +
             "from Member as m " +
             "where m.id = :id")
     MemberDTO findByUserId2(long id);
