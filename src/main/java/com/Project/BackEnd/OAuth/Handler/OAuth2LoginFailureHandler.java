@@ -11,10 +11,16 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+
+/*
+설명 : OAuth2 로그인 실패 핸들러
+스프링 시큐리티 내에서 OAuth2 로그인을 실패 했을때 FailHandler 등록
+ */
 @Slf4j
 @Component
 public class OAuth2LoginFailureHandler implements AuthenticationFailureHandler {
 
+    // 실패 로직
     @Override
     public void onAuthenticationFailure (HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

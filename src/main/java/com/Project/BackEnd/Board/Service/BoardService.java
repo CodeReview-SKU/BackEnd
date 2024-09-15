@@ -10,6 +10,9 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -22,6 +25,7 @@ import com.Project.BackEnd.Board.Entity.Board.tag;
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final int countsPerPage = 7;
 
     // 멤버, 제목, 내용, 카테고리, 북마크(0), 태그
     public void create(Member member, String title, String content, String sourceCode, // Create
@@ -81,10 +85,10 @@ public class BoardService {
 
     }
 
-    public List<BoardInfoDTO> getBoardList() {  // 페이지 8개의 게시물 리스트로 보여주는 부분
-        List<BoardInfoDTO> list = boardRepository.findAllList();
-        list.sort(Comparator.comparing(BoardInfoDTO::getWrite_date)); // 작성 일시를 기준으로 내림차순
-        return list;
+
+    public Page<BoardInfoDTO> getBoardList(int page) {  // 페이지 8개의 게시물 리스트로 보여주는 부분
+        Pageable pageable = PageRequest.of(page, this.countsPerPage, Sort.Direction.DESC, "write_date");
+        return this.boardRepository.findAllList(pageable);
     }
 
     public List<BoardInfoDTO> getBoardListByMember(long memberId) {

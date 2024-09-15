@@ -9,10 +9,12 @@ import com.Project.BackEnd.Board.Service.BoardService;
 import com.Project.BackEnd.Member.Entity.Member;
 import com.Project.BackEnd.Member.Service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("/api/board")
@@ -22,9 +24,11 @@ public class BoardController {
     private final BoardService boardService;
     private final MemberService memberService;
 
-    @GetMapping("/list") //게시물 리스트 뷰어 컨트롤러
-    public ResponseEntity<List<BoardInfoDTO>> list() {
-        List<BoardInfoDTO> boardList = this.boardService.getBoardList();
+
+
+    @GetMapping("/list?page={page}") //게시물 리스트 뷰어 컨트롤러
+    public ResponseEntity<Page<BoardInfoDTO>> list(@PathVariable int page) {
+        Page<BoardInfoDTO> boardList = this.boardService.getBoardList(page);
         return ResponseEntity.ok(boardList);
     }
 
@@ -57,7 +61,7 @@ public class BoardController {
     }
 
     @PutMapping(value = "/detail/{id}")
-    public ResponseEntity<List<BoardInfoDTO>> modify(@PathVariable long id, @RequestBody BoardDTO boardDTO) {
+    public ResponseEntity<String> modify(@PathVariable long id, @RequestBody BoardDTO boardDTO) {
         Board board = boardService.getBoard(id);
 
         boardService.update(board,
@@ -66,7 +70,7 @@ public class BoardController {
                 category.fromString(boardDTO.getCategory()),
                 tag.fromString(boardDTO.getTag()));
 
-        return ResponseEntity.ok(boardService.getBoardList());
+        return ResponseEntity.ok("modified success");
     }
 
     @DeleteMapping(value = "/delete/{id}")

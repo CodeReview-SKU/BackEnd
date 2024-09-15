@@ -43,33 +43,8 @@ public class CommentController {
             return ResponseEntity.status(500).body("Error creating comment: " + e.getMessage());
         }
     }
-
-    // Member id 기준 댓글 조회
-    @GetMapping("/member/{id}")
-    public ResponseEntity<List<Comment>> commentFindByMemberId(@PathVariable Long id){
-        try{
-
-            List<Comment> comments = this.commentService.findByMemberId(id);
-            return ResponseEntity.ok(comments);
-        }
-        catch (Exception e){
-            return ResponseEntity.status(500).body(null);
-        }
-    }
-
-    // Board id 기준 댓글 조회
-    @GetMapping("/board/{id}")
-    public ResponseEntity<List<Comment>> commentFindByBoardId(@PathVariable Long id){
-        try {
-            List<Comment> comments = this.commentService.findByBoardId(id);
-            return ResponseEntity.ok(comments);
-        }
-        catch (Exception e){
-            return ResponseEntity.status(500).body(null);
-        }
-    }
     /*
-    *** Member 객체로 Lsit 조회
+    *** Member 객체로 List 조회
      */
     @GetMapping("/member/{id}")
     public ResponseEntity<List<CommentDetailDTO>> commentFindByMember(@PathVariable Long id){

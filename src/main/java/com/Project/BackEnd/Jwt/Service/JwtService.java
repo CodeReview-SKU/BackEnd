@@ -78,7 +78,6 @@ public class JwtService {
         log.info("access token, refresh token 생성 완료.");
     }
 
-
     public Optional<String> extractRefreshToken(HttpServletRequest httpServletRequest) {
         return Optional.ofNullable(httpServletRequest.getHeader(refreshHeader))
                 .filter(refreshToken -> refreshToken.startsWith(BEARER))

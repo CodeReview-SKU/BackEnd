@@ -7,7 +7,6 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-
 public class BoardDetailDTO {
     private long id;
     private String title;

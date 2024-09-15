@@ -17,14 +17,21 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+
+/*
+설명 : OAuth2 로그인 성공 핸들러 메소드 정의
+ */
+
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
-    private final JwtService jwtService;
-    private final MemberRepository memberRepository;
-    private final String client = "http://localhost:5173";
+    private final JwtService jwtService; // JWT 토큰 관련 메소드를 이용하기 위해 호출
+    private final MemberRepository memberRepository; // 멤버를 저장해야 하는 경우도 있으므로 레포지토리 호출
+    private final String client = "http://localhost:5173"; // 리다이렉트 보낼 클라이언트
 
+    // OAuth2 로그인 성공 시, 토큰 과 사용자 정보를 클라이언트로 쿼리스트링 통해 보낸다.
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         log.info("OAuth2 Login 성공");
@@ -38,6 +45,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
                 long name = memberRepository.findByName(jwtService.extractName(accessToken).get()).get().getId();
                 String redirectUrl = client + "/login/redirect?name=" + name + "&accessToken=" + accessToken;
                 response.sendRedirect(redirectUrl);
+                loginSuccess(response, oAuth2User);
             }
             else {
                 loginSuccess(response, oAuth2User);
