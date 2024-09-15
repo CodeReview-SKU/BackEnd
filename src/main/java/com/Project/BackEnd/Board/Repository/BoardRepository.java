@@ -22,8 +22,8 @@ import java.util.Optional;
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
-    @Query("select new com.Project.BackEnd.Board.Dto.BoardInfoDTO(b.id, b.title, m.name, b.content, b.write_date, b.likeCount) from Board as b left join fetch Member as m on b.member = m")
-    List<BoardInfoDTO> findAllList();
+    @Query("select new com.Project.BackEnd.Board.Dto.BoardInfoDTO(b.id, b.title, m.name, b.content, b.write_date, b.likeCount) from Board as b left join Member as m on b.member = m")
+    Page<BoardInfoDTO> findAllList(Pageable pageable);
 
     @Query("select new com.Project.BackEnd.Board.Dto.BoardDetailDTO(b.id, b.title, m.name, b.content, b.source_code, b.image, b.category, b.tag, b.write_date, b.modified_date, b.likeCount) from Board as b left join fetch Member as m on b.member = m where b.id = :id")
     BoardDetailDTO findDetailByID(@Param("id") long id);
