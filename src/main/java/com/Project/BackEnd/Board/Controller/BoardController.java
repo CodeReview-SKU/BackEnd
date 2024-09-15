@@ -8,6 +8,7 @@ import com.Project.BackEnd.Board.Entity.Board.*;
 import com.Project.BackEnd.Board.Service.BoardService;
 import com.Project.BackEnd.Member.Entity.Member;
 import com.Project.BackEnd.Member.Service.MemberService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RequestMapping("/api/board")
 @RequiredArgsConstructor
+@Tag(name = "게시판 API", description = "게시판 컨트롤러에 대한 설명입니다.")
 @RestController
 public class BoardController {
     private final BoardService boardService;

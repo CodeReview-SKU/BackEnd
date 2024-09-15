@@ -36,11 +36,11 @@ public class MemberController {
         return ResponseEntity.ok("Logout successful");
     }
 
-    @PostMapping("/register")
-    public String signUp(@RequestBody MemberDTO memberDTO) throws Exception {
-        memberService.create(memberDTO.getUserId(), memberDTO.getPassword(), memberDTO.getName(), memberDTO.getEmail());
-        return "Success sign up";
-    }
+//    @PostMapping("/register")
+//    public String signUp(@RequestBody MemberDTO memberDTO) throws Exception {
+//        memberService.create(memberDTO.getUserId(), memberDTO.getPassword(), memberDTO.getName(), memberDTO.getEmail());
+//        return "Success sign up";
+//    }
 
     @GetMapping("/detail/{id}")
     public ResponseEntity<Member> getMemberById(@PathVariable long id) throws Exception {
@@ -83,15 +83,15 @@ public class MemberController {
     /*
     *** 프로필 조회 목적
      */
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<MemberDTO> getMemberDetailById(@PathVariable long id){
-        try {
-            MemberDTO member = this.memberService.getMemberDetailById(id);
-            return ResponseEntity.ok(member);
-        }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
+//    @GetMapping("/detail/{id}")
+//    public ResponseEntity<MemberDTO> getMemberDetailById(@PathVariable long id){
+//        try {
+//            MemberDTO member = this.memberService.getMemberDetailById(id);
+//            return ResponseEntity.ok(member);
+//        }
+//        catch (Exception e){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        }
+//    }
 
 }

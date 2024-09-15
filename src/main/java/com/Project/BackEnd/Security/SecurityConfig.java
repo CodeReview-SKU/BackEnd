@@ -44,7 +44,7 @@ public class SecurityConfig {
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
     private String client = "http://localhost:5173";
-
+    private String swagger = "http://localhost:8080";
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -58,6 +58,8 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                         authorizationManagerRequestMatcherRegistry
+                                .requestMatchers("/swagger-ui/**").permitAll()
+                                .requestMatchers("/api-docs").permitAll()
                                 .requestMatchers(HttpMethod.GET,"/api/member/**").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/member/**").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/board/**").permitAll()
@@ -89,7 +91,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(client)); // 허용할 출처 설정
+        configuration.setAllowedOrigins(List.of(client, swagger)); // 허용할 출처 설정
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
