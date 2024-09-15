@@ -26,33 +26,19 @@ public class OAuthAttributes {
         this.oAuth2UserInfo = oAuth2UserInfo;
     }
 
-    public static OAuthAttributes of(accountProvider accountProvider, String memberNameAttributeName, Map<String, Object> attributes) {
-        if (accountProvider == Member.accountProvider.KAKAO) {
-            return ofKakao(memberNameAttributeName, attributes);
-        }
-        else {
-            return ofGoogle(memberNameAttributeName, attributes);
-        }
-    }
 
-    private static OAuthAttributes ofGoogle(String memberNameAttributeName, Map<String, Object> attributes) {
+    public static OAuthAttributes of(accountProvider accountProvider, String memberNameAttributeName, Map<String, Object> attributes) {
         return OAuthAttributes.builder()
                 .nameAttributeKey(memberNameAttributeName)
                 .oAuth2UserInfo(new GoogleOAuth2UserInfo(attributes))
                 .build();
     }
 
-    private static OAuthAttributes ofKakao(String memberNameAttributeName, Map<String, Object> attributes) {
-        return OAuthAttributes.builder()
-                .nameAttributeKey(memberNameAttributeName)
-                .oAuth2UserInfo(new KakaoOAuth2UserInfo(attributes))
-                .build();
-    }
-
-    public Member toEntity(accountProvider accountProvider, OAuth2UserInfo oAuth2UserInfo) {
+    public Member toEntity(accountProvider accountProvider,String email, OAuth2UserInfo oAuth2UserInfo) {
         return Member.builder()
                 .accountProvider(accountProvider)
                 .name(oAuth2UserInfo.getName())
+                .email(email)
                 .role(role.USER)
                 .build();
 

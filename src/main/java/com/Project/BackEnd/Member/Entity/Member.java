@@ -61,17 +61,19 @@ public class Member {
     private String refreshToken;
 
     @Builder
-    public Member(String name, accountProvider accountProvider, role role) {
+    public Member(String name, String email, accountProvider accountProvider, role role) {
         this.name = name;
         this.accountProvider = accountProvider;
+        this.email = email;
         this.role = role;
     }
 
     @Builder
-    public Member(String userId, String password, String name, role role) {
+    public Member(String userId, String password, String name, String email, role role) {
         this.userId = userId;
         this.password = password;
         this.name = name;
+        this.email = email;
         this.role = role;
     }
 
