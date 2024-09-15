@@ -80,4 +80,18 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getMemberByUserId(userId));
     }
 
+    /*
+    *** 프로필 조회 목적
+     */
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<MemberDTO> getMemberDetailById(@PathVariable long id){
+        try {
+            MemberDTO member = this.memberService.getMemberDetailById(id);
+            return ResponseEntity.ok(member);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
 }
