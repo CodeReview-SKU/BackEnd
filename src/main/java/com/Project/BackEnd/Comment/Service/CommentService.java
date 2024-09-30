@@ -10,6 +10,10 @@ import com.Project.BackEnd.Comment.Repository.CommentRepository;
 import com.Project.BackEnd.DataNotFoundException;
 import com.Project.BackEnd.Member.Entity.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 
@@ -22,6 +26,7 @@ import java.util.Optional;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final int countsPerPage = 19;
 
     // Create 댓글 작성
     public void createComment(String content, Member member, Board board){
@@ -78,5 +83,13 @@ public class CommentService {
     // Delete 댓글 삭제
     public void deleteComment(long commentId){
         this.commentRepository.deleteById(commentId);
+    }
+
+    /*
+    *** 페이징 기능
+     */
+    public Page<CommentInfoDTO> getCommentList(int page){ // 20개씩 페이징
+        Pageable pageable = PageRequest.of(page, this.countsPerPage, Sort.Direction.DESC, "write_date");
+        return this.commentRepository.findAllList(pageable);
     }
 }
