@@ -103,9 +103,9 @@ public class CommentController {
     /*
     *** 페이징 컨트롤러
      */
-    @GetMapping("/list?page={page}")
-    public ResponseEntity<Page<CommentInfoDTO>> getCommentList(@PathVariable int page){
-        Page<CommentInfoDTO> commentList = this.commentService.getCommentList(page);
+    @GetMapping("/list/{boardId}?page={page}")
+    public ResponseEntity<Page<CommentInfoDTO>> getCommentList(@PathVariable Long boardId, @PathVariable int page){
+        Page<CommentInfoDTO> commentList = this.commentService.getCommentList(boardId, page);
         return ResponseEntity.ok(commentList);
     }
 }

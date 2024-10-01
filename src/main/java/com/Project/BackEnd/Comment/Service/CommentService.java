@@ -88,8 +88,8 @@ public class CommentService {
     /*
     *** 페이징 기능
      */
-    public Page<CommentInfoDTO> getCommentList(int page){ // 20개씩 페이징
+    public Page<CommentInfoDTO> getCommentList(Long boardId, int page){ // 20개씩 페이징
         Pageable pageable = PageRequest.of(page, this.countsPerPage, Sort.Direction.DESC, "write_date");
-        return this.commentRepository.findAllList(pageable);
+        return this.commentRepository.findCommentListByBoard(boardId, pageable);
     }
 }

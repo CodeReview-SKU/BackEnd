@@ -26,6 +26,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<CommentInfoDTO> findInfoByBoard(@Param("id") Long id);
 
     @Query("select new com.Project.BackEnd.Comment.DTO.CommentInfoDTO(c.id, c.content, c.member.name, c.createDate, c.modifyDate) " +
-            "from Comment as c left join Board as b on c.board = b")
-    Page<CommentInfoDTO> findAllList(Pageable pageable);
+            "from Comment as c " +
+            "where c.board.id = :id")
+    Page<CommentInfoDTO> findCommentListByBoard(@Param("id") Long id, Pageable pageable);
 }
