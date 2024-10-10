@@ -48,7 +48,7 @@ public class CommentController {
     *** Member 객체로 List 조회
      */
     @GetMapping("/member/{id}")
-    public ResponseEntity<List<CommentDetailDTO>> commentFindByMember(@PathVariable Long id){
+    public ResponseEntity<List<CommentDetailDTO>> commentFindByMember(@PathVariable("id) Long id){
         try {
             List<CommentDetailDTO> comment = this.commentService.getCommentDetail(id);
             return ResponseEntity.ok(comment);
@@ -61,7 +61,7 @@ public class CommentController {
     *** Board 객체로 List 조회
      */
     @GetMapping("/board/{id}")
-    public ResponseEntity<List<CommentInfoDTO>> commentFindByBoard(@PathVariable Long id) {
+    public ResponseEntity<List<CommentInfoDTO>> commentFindByBoard(@PathVariable("id") Long id) {
         try {
             List<CommentInfoDTO> comment = this.commentService.getCommentInfo(id);
             return ResponseEntity.ok(comment);
@@ -104,7 +104,7 @@ public class CommentController {
     *** 페이징 컨트롤러
      */
     @GetMapping("/list/{boardId}?page={page}")
-    public ResponseEntity<Page<CommentInfoDTO>> getCommentList(@PathVariable Long boardId, @PathVariable int page){
+    public ResponseEntity<Page<CommentInfoDTO>> getCommentList(@PathVariable("boardId") Long boardId, @PathVariable("page") Integer page){
         Page<CommentInfoDTO> commentList = this.commentService.getCommentList(boardId, page);
         return ResponseEntity.ok(commentList);
     }
