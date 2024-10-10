@@ -11,6 +11,7 @@ import com.Project.BackEnd.Member.Entity.Member;
 import com.Project.BackEnd.Member.Service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +48,7 @@ public class CommentController {
     *** Member 객체로 List 조회
      */
     @GetMapping("/member/{id}")
-    public ResponseEntity<List<CommentDetailDTO>> commentFindByMember(@PathVariable Long id){
+    public ResponseEntity<List<CommentDetailDTO>> commentFindByMember(@PathVariable("id) Long id){
         try {
             List<CommentDetailDTO> comment = this.commentService.getCommentDetail(id);
             return ResponseEntity.ok(comment);
@@ -60,7 +61,7 @@ public class CommentController {
     *** Board 객체로 List 조회
      */
     @GetMapping("/board/{id}")
-    public ResponseEntity<List<CommentInfoDTO>> commentFindByBoard(@PathVariable Long id) {
+    public ResponseEntity<List<CommentInfoDTO>> commentFindByBoard(@PathVariable("id") Long id) {
         try {
             List<CommentInfoDTO> comment = this.commentService.getCommentInfo(id);
             return ResponseEntity.ok(comment);
@@ -99,5 +100,12 @@ public class CommentController {
         }
     }
 
-
+    /*
+    *** 페이징 컨트롤러
+     */
+    @GetMapping("/list/{boardId}?page={page}")
+    public ResponseEntity<Page<CommentInfoDTO>> getCommentList(@PathVariable("boardId") Long boardId, @PathVariable("page") Integer page){
+        Page<CommentInfoDTO> commentList = this.commentService.getCommentList(boardId, page);
+        return ResponseEntity.ok(commentList);
+    }
 }
