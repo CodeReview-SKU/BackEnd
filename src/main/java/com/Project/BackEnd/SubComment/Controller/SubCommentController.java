@@ -9,6 +9,7 @@ import com.Project.BackEnd.SubComment.DTO.SubCommentDetailDTO;
 import com.Project.BackEnd.SubComment.DTO.SubCommentInfoDTO;
 import com.Project.BackEnd.SubComment.Entity.SubComment;
 import com.Project.BackEnd.SubComment.Service.SubCommentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "대댓글 API", description = "게시판 컨트롤러에 대한 설명입니다.")
 @RequestMapping("/api/subcomment")
 public class SubCommentController {
     private final CommentService commentService;
