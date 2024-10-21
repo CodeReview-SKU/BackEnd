@@ -100,14 +100,14 @@ public class MemberService {
     /*
     *** 프로필 조회 목적
      */
-//    public MemberDTO getMemberDetailById(long id){
-//        MemberDTO member = this.memberRepository.findByUserId2(id);
-//        if (member == null){
-//            throw new DataNotFoundException("Member not found");
-//        }else {
-//            return member;
-//        }
-//    }
+    public MemberDTO getMemberDetailById(long id){
+        MemberDTO member = this.memberRepository.findByUserId2(id);
+        if (member == null){
+            throw new DataNotFoundException("Member not found");
+        }else {
+            return member;
+        }
+    }
 
     public Member getMemberByUserId(String userId) {
         Optional<Member> member = this.memberRepository.findByUserId(userId);
