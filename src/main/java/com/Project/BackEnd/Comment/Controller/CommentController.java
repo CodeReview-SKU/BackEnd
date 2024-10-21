@@ -50,7 +50,7 @@ public class CommentController {
     *** Member 객체로 List 조회
      */
     @GetMapping("/member/{id}")
-    public ResponseEntity<List<CommentDetailDTO>> commentFindByMember(@PathVariable("id) Long id){
+    public ResponseEntity<List<CommentDetailDTO>> commentFindByMember(@PathVariable("id") Long id){
         try {
             List<CommentDetailDTO> comment = this.commentService.getCommentDetail(id);
             return ResponseEntity.ok(comment);
