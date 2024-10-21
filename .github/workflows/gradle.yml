@@ -41,8 +41,8 @@ jobs:
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
           docker build -t app .
-          docker tag app ${{ secrets.DOCKER_USERNAME }}
-          docker push ${{ secrets.DOCKER_USERNAME }}
+          docker tag app ${{ secrets.DOCKER_USERNAME }}/codeReview:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/codeReview:latest
 
       - name: Deploy
         uses: appleboy/ssh-action@master
@@ -52,8 +52,8 @@ jobs:
           key: ${{ secrets.PRIVATE_KEY }} # pem 키
           # 도커 작업
           script: |
-            docker pull ${{ secrets.DOCKER_USERNAME }}/gomaoom:latest
+            docker pull ${{ secrets.DOCKER_USERNAME }}/codeReview:latest
             docker stop $(docker ps -a -q)
-            docker run -d --log-driver=syslog -p 8080:8080 -e SPRING_PROFILES_ACTIVE=prod ${{ secrets.DOCKER_USERNAME }}/gomaoom:latest
+            docker run -d --log-driver=syslog -p 8080:8080 -e SPRING_PROFILES_ACTIVE=prod ${{ secrets.DOCKER_USERNAME }}/codeReview:latest
             docker rm $(docker ps --filter 'status=exited' -a -q)
             docker image prune -a -f
