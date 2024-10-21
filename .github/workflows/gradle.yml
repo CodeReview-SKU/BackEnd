@@ -23,7 +23,7 @@ jobs:
 
       - name: make application-prod.yml
         run: |
-          cd ./BackEnd/src/main/resources
+          cd ./home/ubuntu/BackEnd/src/main/resources
           touch ./application-prod.yml
           echo "${{ secrets.APPLICATION_PROD }}" > ./application-prod.yml
 
