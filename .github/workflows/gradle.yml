@@ -20,8 +20,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          
+      - name: List directories
+        run: |
+          ls -la
 
-      - name: make application-prod.yml
+      - name: make application.properties
         run: |
           cd ./BackEnd/src/main/resources
           touch ./application.properties
