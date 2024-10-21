@@ -27,7 +27,7 @@ jobs:
 
       - name: make application.properties
         run: |
-          cd ./BackEnd/src/main/resources
+          cd src/main/resources
           touch ./application.properties
           echo "${{ secrets.APPLICATION_PROD }}" > ./application.properties
 
