@@ -9,6 +9,7 @@ import com.Project.BackEnd.BookMark.Entity.BookMark;
 import com.Project.BackEnd.BookMark.Service.BookMarkService;
 import com.Project.BackEnd.Member.Entity.Member;
 import com.Project.BackEnd.Member.Service.MemberService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,6 +25,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
+@Tag(name = "북마크 API", description = "게시판 컨트롤러에 대한 설명입니다.")
 @RequestMapping("/api/bookmark")
 @RequiredArgsConstructor
 public class BookMarkController {

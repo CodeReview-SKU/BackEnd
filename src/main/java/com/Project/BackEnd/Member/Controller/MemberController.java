@@ -6,6 +6,7 @@ import com.Project.BackEnd.Member.DTO.MemberDTO;
 import com.Project.BackEnd.Member.DTO.loginInfo;
 import com.Project.BackEnd.Member.Entity.Member;
 import com.Project.BackEnd.Member.Service.MemberService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/member")
+@Tag(name = "멤버 API", description = "멤버 컨트롤러에 대한 설명입니다.")
 @RequiredArgsConstructor
 @Slf4j
 public class MemberController {
@@ -36,15 +38,10 @@ public class MemberController {
         return ResponseEntity.ok("Logout successful");
     }
 
-//    @PostMapping("/register")
-//    public String signUp(@RequestBody MemberDTO memberDTO) throws Exception {
-//        memberService.create(memberDTO.getUserId(), memberDTO.getPassword(), memberDTO.getName(), memberDTO.getEmail());
-//        return "Success sign up";
-//    }
-
-    @GetMapping("/detail/{id}")
-    public ResponseEntity<Member> getMemberById(@PathVariable long id) throws Exception {
-        return ResponseEntity.ok(memberService.getMemberById((id)));
+    @PostMapping("/register")
+    public String signUp(@RequestBody MemberDTO memberDTO) throws Exception {
+        memberService.create(memberDTO.getUserId(), memberDTO.getPassword(), memberDTO.getName(), memberDTO.getEmail());
+        return "Success sign up";
     }
 
 
@@ -75,23 +72,19 @@ public class MemberController {
         return ResponseEntity.ok(memberService.getMember(name) == null);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<Member> getMemberByUserId(@PathVariable String userId) throws Exception {
-        return ResponseEntity.ok(memberService.getMemberByUserId(userId));
-    }
 
     /*
     *** 프로필 조회 목적
      */
-//    @GetMapping("/detail/{id}")
-//    public ResponseEntity<MemberDTO> getMemberDetailById(@PathVariable long id){
-//        try {
-//            MemberDTO member = this.memberService.getMemberDetailById(id);
-//            return ResponseEntity.ok(member);
-//        }
-//        catch (Exception e){
-//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//        }
-//    }
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<MemberDTO> getMemberDetailById(@PathVariable("id") Long id){
+        try {
+            MemberDTO member = this.memberService.getMemberDetailById(id);
+            return ResponseEntity.ok(member);
+        }
+        catch (Exception e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
 }
